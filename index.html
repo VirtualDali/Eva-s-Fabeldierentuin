@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eva's Fabeldierentuin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+
+        <!-- STARTSCHERM -->
+        <div id="screen-start" class="screen active">
+            <div class="start-content">
+                <div class="eva-avatar-large">
+                    <svg viewBox="0 0 200 300" class="eva-svg">
+                        <!-- Haar achter (kort, krullend, lichtblond) -->
+                        <ellipse cx="100" cy="120" rx="62" ry="58" fill="#D4A04A"/>
+                        <circle cx="48" cy="130" r="14" fill="#D4A04A"/>
+                        <circle cx="152" cy="130" r="14" fill="#D4A04A"/>
+                        <circle cx="42" cy="148" r="12" fill="#D4A04A"/>
+                        <circle cx="158" cy="148" r="12" fill="#D4A04A"/>
+                        <circle cx="44" cy="110" r="13" fill="#D4A04A"/>
+                        <circle cx="156" cy="110" r="13" fill="#D4A04A"/>
+                        <circle cx="50" cy="160" r="10" fill="#D4A04A"/>
+                        <circle cx="60" cy="165" r="9" fill="#D4A04A"/>
+                        <circle cx="150" cy="160" r="10" fill="#D4A04A"/>
+                        <circle cx="140" cy="165" r="9" fill="#D4A04A"/>
+                        <ellipse cx="100" cy="100" rx="50" ry="55" fill="#FDDCB5"/>
+                        <ellipse cx="100" cy="63" rx="54" ry="32" fill="#D4A04A"/>
+                        <circle cx="60" cy="68" r="18" fill="#D4A04A"/>
+                        <circle cx="140" cy="68" r="18" fill="#D4A04A"/>
+                        <circle cx="80" cy="55" r="14" fill="#D4A04A"/>
+                        <circle cx="120" cy="55" r="14" fill="#D4A04A"/>
+                        <circle cx="100" cy="48" r="12" fill="#D4A04A"/>
+                        <circle cx="65" cy="72" r="8" fill="#E0B45C" opacity="0.5"/>
+                        <circle cx="135" cy="72" r="8" fill="#E0B45C" opacity="0.5"/>
+                        <path d="M55 82 Q65 58 80 62 Q90 52 100 58 Q110 52 120 62 Q135 58 145 82 Q138 68 120 65 Q105 55 100 60 Q95 55 80 65 Q62 68 55 82Z" fill="#C8943E"/>
+                        <ellipse cx="82" cy="100" rx="7" ry="8" fill="white"/>
+                        <ellipse cx="118" cy="100" rx="7" ry="8" fill="white"/>
+                        <ellipse cx="83" cy="101" rx="4.5" ry="5" fill="#4A90D9"/>
+                        <ellipse cx="119" cy="101" rx="4.5" ry="5" fill="#4A90D9"/>
+                        <ellipse cx="84" cy="99" rx="2" ry="2" fill="#1a1a2e"/>
+                        <ellipse cx="120" cy="99" rx="2" ry="2" fill="#1a1a2e"/>
+                        <ellipse cx="86" cy="97" rx="1" ry="1" fill="white"/>
+                        <ellipse cx="122" cy="97" rx="1" ry="1" fill="white"/>
+                        <path d="M72 88 Q82 84 92 87" stroke="#B08040" stroke-width="2" fill="none"/>
+                        <path d="M108 87 Q118 84 128 88" stroke="#B08040" stroke-width="2" fill="none"/>
+                        <circle cx="75" cy="112" r="1.5" fill="#D4A574" opacity="0.6"/>
+                        <circle cx="80" cy="115" r="1.2" fill="#D4A574" opacity="0.6"/>
+                        <circle cx="70" cy="116" r="1.3" fill="#D4A574" opacity="0.6"/>
+                        <circle cx="120" cy="112" r="1.5" fill="#D4A574" opacity="0.6"/>
+                        <circle cx="125" cy="115" r="1.2" fill="#D4A574" opacity="0.6"/>
+                        <circle cx="130" cy="116" r="1.3" fill="#D4A574" opacity="0.6"/>
+                        <path d="M97 110 Q100 116 103 110" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+                        <path d="M88 122 Q100 134 112 122" stroke="#c0392b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="65" y="155" width="70" height="50" rx="5" fill="#F5F0E8"/>
+                        <line x1="100" y1="155" x2="100" y2="200" stroke="#E8E0D0" stroke-width="1"/>
+                        <path d="M55 155 L65 155 L65 205 L55 205 Q48 205 48 198 L48 162 Q48 155 55 155Z" fill="#1B2A4A"/>
+                        <path d="M135 155 L145 155 Q152 155 152 162 L152 198 Q152 205 145 205 L135 205Z" fill="#1B2A4A"/>
+                        <path d="M65 155 L80 155 L80 205 L65 205Z" fill="#1B2A4A"/>
+                        <path d="M120 155 L135 155 L135 205 L120 205Z" fill="#1B2A4A"/>
+                        <rect x="48" y="193" width="17" height="3" rx="1" fill="#D4760A"/>
+                        <rect x="48" y="198" width="17" height="3" rx="1" fill="#D4760A"/>
+                        <rect x="135" y="193" width="17" height="3" rx="1" fill="#D4760A"/>
+                        <rect x="135" y="198" width="17" height="3" rx="1" fill="#D4760A"/>
+                        <circle cx="80" cy="167" r="3" fill="#8B6914"/>
+                        <circle cx="80" cy="180" r="3" fill="#8B6914"/>
+                        <circle cx="80" cy="193" r="3" fill="#8B6914"/>
+                    </svg>
+                </div>
+                <h1 class="game-title">Eva's<br>Fabeldierentuin</h1>
+                <p class="game-subtitle">Verken de wereld, vind fabeldieren en word de beste verzorger!</p>
+                <div class="start-buttons">
+                    <button id="btn-new-game" class="btn btn-primary btn-large">🌟 Nieuw Avontuur</button>
+                    <button id="btn-continue" class="btn btn-secondary btn-large" style="display:none;">▶️ Verder Spelen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME WORLD -->
+        <div id="screen-world" class="screen">
+            <div class="hud">
+                <div class="hud-left">
+                    <span class="hud-area" id="hud-area">📍 Dorpje</span>
+                </div>
+                <div class="hud-center">
+                    <span class="hud-stat" id="hud-money">💰 €100</span>
+                    <span class="hud-stat" id="hud-team">🐾 0/6</span>
+                </div>
+                <div class="hud-right">
+                    <button id="btn-team" class="hud-btn">📋 Team</button>
+                    <button id="btn-bag" class="hud-btn">🎒 Tas</button>
+                </div>
+            </div>
+            <canvas id="game-canvas" width="400" height="272"></canvas>
+            <div class="controls-hint" id="controls-hint">
+                Gebruik <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> of <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> om te lopen · <kbd>Spatie</kbd> om te interacteren
+            </div>
+        </div>
+
+        <!-- BATTLE SCREEN -->
+        <div id="screen-battle" class="screen">
+            <div class="battle-scene">
+                <div class="battle-bg" id="battle-bg"></div>
+                <div class="battle-enemy">
+                    <div class="battle-enemy-info" id="battle-enemy-info"></div>
+                    <canvas class="battle-enemy-sprite" id="battle-enemy-sprite" width="64" height="64"></canvas>
+                </div>
+                <div class="battle-player">
+                    <canvas class="battle-player-sprite" id="battle-player-sprite" width="64" height="64"></canvas>
+                    <div class="battle-player-info" id="battle-player-info"></div>
+                </div>
+            </div>
+            <div class="battle-ui">
+                <div class="battle-text" id="battle-text"></div>
+                <div class="battle-actions" id="battle-actions"></div>
+            </div>
+        </div>
+
+        <!-- TEAM / PARTY OVERLAY -->
+        <div id="overlay-team" class="overlay" style="display:none;">
+            <div class="overlay-content">
+                <div class="overlay-header">
+                    <h2>📋 Mijn Team</h2>
+                    <button class="overlay-close" id="close-team">✕</button>
+                </div>
+                <div class="team-list" id="team-list"></div>
+            </div>
+        </div>
+
+        <!-- BAG / INVENTORY OVERLAY -->
+        <div id="overlay-bag" class="overlay" style="display:none;">
+            <div class="overlay-content">
+                <div class="overlay-header">
+                    <h2>🎒 Tas</h2>
+                    <button class="overlay-close" id="close-bag">✕</button>
+                </div>
+                <div class="bag-list" id="bag-list"></div>
+            </div>
+        </div>
+
+        <!-- DIALOG BOX -->
+        <div id="dialog-box" class="dialog-box" style="display:none;">
+            <div class="dialog-text" id="dialog-text"></div>
+            <div class="dialog-hint">▼ Spatie</div>
+        </div>
+
+        <!-- TOAST -->
+        <div id="toast" class="toast" style="display:none;">
+            <div class="toast-content">
+                <span id="toast-text"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/animals.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
