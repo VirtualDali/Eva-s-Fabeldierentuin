@@ -71,7 +71,7 @@ function showBattleMainActions() {
         { label: '⚔️ Aanval', action: 'fight' },
         { label: '🎒 Tas', action: 'bag' },
         { label: '🔄 Wissel', action: 'switch' },
-        ...(battleState.isWild ? [{ label: '🏃 Vluchten', action: 'run' }] : [])
+        { label: '🏃 Vluchten', action: 'run' }
     ];
 
     actions.forEach(a => {
@@ -255,33 +255,10 @@ function battleLost() {
 }
 
 function tryRun() {
-    const runChance = 0.6 + (battleState.player.spd - battleState.enemy.spd) * 0.05;
-    if (Math.random() < Math.min(0.95, Math.max(0.2, runChance))) {
-        battleState.escaped = true;
-        setBattleText('Je bent ontsnapt! 🏃');
-        document.getElementById('battle-actions').innerHTML = '';
-        setTimeout(() => endBattle(), 1200);
-    } else {
-        setBattleText('Je kon niet ontsnappen! 😰');
-        // Enemy attacks
-        setTimeout(() => {
-            const enemyDef = getAnimalDef(battleState.enemy.id);
-            const moveIdx = Math.floor(Math.random() * enemyDef.moves.length);
-            const result = executeMove({
-                move: enemyDef.moves[moveIdx],
-                attacker: battleState.enemy,
-                defender: battleState.player,
-                attackerDef: enemyDef,
-                defenderDef: getAnimalDef(battleState.player.id),
-                isPlayer: false
-            });
-            setBattleText(result.text);
-            updateBattleInfo('player');
-            setTimeout(() => {
-                if (!checkBattleEnd()) showBattleMainActions();
-            }, 1000);
-        }, 1000);
-    }
+    battleState.escaped = true;
+    setBattleText('Je bent ontsnapt! 🏃');
+    document.getElementById('battle-actions').innerHTML = '';
+    setTimeout(() => endBattle(), 1200);
 }
 
 function showBattleBag() {

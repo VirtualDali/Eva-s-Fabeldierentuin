@@ -213,7 +213,7 @@ function handleMovement(timestamp) {
 
     // Check for door (house entry)
     const tile = getTile(gamePlayer.currentMap, newX, newY);
-    if (tile === TILE.DOOR) {
+    if (tile === TILE.DOOR || tile === TILE.CASTLE_DOOR) {
         const house = getHouseAt(gamePlayer.currentMap, newX, newY);
         if (house) {
             gamePlayer.currentMap = house.inside;
@@ -358,7 +358,15 @@ function handleInteract() {
         return;
     }
     if (tile === TILE.CASTLE_DOOR) {
-        showDialog(['🏰 De grote kasteelpoort. Hier woont de koning van het dorp!', '👑 Misschien kun je hier later op bezoek komen...']);
+        const house = getHouseAt(gamePlayer.currentMap, checkX, checkY);
+        if (house) {
+            gamePlayer.currentMap = house.inside;
+            gamePlayer.x = 11;
+            gamePlayer.y = 11;
+            updateHUD();
+        } else {
+            showDialog(['🏰 De grote kasteelpoort.']);
+        }
         return;
     }
 }
@@ -1053,8 +1061,9 @@ function openTeamOverlay() {
 
         const card = document.createElement('div');
         card.className = 'team-card';
+        const canvasId = 'team-sprite-' + i;
         card.innerHTML = `
-            <div class="team-card-emoji">${def.emoji}</div>
+            <div class="team-card-sprite"><canvas id="${canvasId}" width="64" height="64"></canvas></div>
             <div class="team-card-info">
                 <div class="team-card-name">${animal.nickname}</div>
                 <div class="team-card-level">Lvl ${animal.level} · ${getTypeEmoji(def.type)} ${def.type} · XP: ${animal.xp}/${animal.xpNeeded}</div>
@@ -1072,6 +1081,11 @@ function openTeamOverlay() {
             </div>
         `;
         list.appendChild(card);
+    });
+
+    // Draw sprites
+    gamePlayer.team.forEach((animal, i) => {
+        drawAnimalSprite('team-sprite-' + i, animal.id, false);
     });
 
     // Care button handlers

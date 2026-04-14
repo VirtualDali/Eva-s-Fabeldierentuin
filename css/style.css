@@ -506,7 +506,8 @@ kbd {
 }
 
 .team-card:hover { border-color: var(--dq-text-gold); }
-.team-card-emoji { font-size: 2rem; }
+.team-card-sprite { width: 64px; height: 64px; flex-shrink: 0; image-rendering: pixelated; }
+.team-card-sprite canvas { width: 64px; height: 64px; image-rendering: pixelated; image-rendering: crisp-edges; }
 .team-card-info { flex: 1; }
 .team-card-name { font-family: var(--font); font-size: 0.5rem; color: var(--dq-text-gold); }
 .team-card-level { font-size: 0.4rem; color: var(--dq-text-dim); line-height: 2.2; }

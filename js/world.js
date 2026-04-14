@@ -98,7 +98,7 @@ const TILE_WALKABLE = new Set([
     TILE.GRASS, TILE.TALLGRASS, TILE.PATH, TILE.DOOR,
     TILE.SAND, TILE.CAVE_FLOOR, TILE.EXIT,
     TILE.HOUSE_INSIDE, TILE.SIGN, TILE.NPC, TILE.HEAL, TILE.SHOP,
-    TILE.RUG, TILE.CASTLE_DOOR, TILE.SNOW, TILE.RUINS_FLOOR
+    TILE.RUG, TILE.CASTLE_DOOR, TILE.SNOW, TILE.RUINS_FLOOR, TILE.SWAMP
 ]);
 
 const TILE_SIZE = 16;
@@ -162,7 +162,9 @@ const MAPS = {
             { doorX: 5, doorY: 4, inside: 'house_eva' },
             { doorX: 20, doorY: 4, inside: 'house_trainer' },
             { doorX: 2, doorY: 9, inside: 'house_eva' },
-            { doorX: 23, doorY: 9, inside: 'house_trainer' }
+            { doorX: 23, doorY: 9, inside: 'house_trainer' },
+            { doorX: 11, doorY: 4, inside: 'house_castle' },
+            { doorX: 13, doorY: 4, inside: 'house_castle' }
         ]
     },
 
@@ -377,6 +379,47 @@ const MAPS = {
                 { id: 'mogwai', level: 5 }
               ]
             }
+        ],
+        houses: []
+    },
+
+    house_castle: {
+        name: 'Kasteel',
+        emoji: '🏰',
+        bgColor: '#4a4a5a',
+        music: 'village',
+        encounters: false,
+        tiles: [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,25,1,1,25,1,1,25,1,1,1,25,1,1,25,1,1,25,1,1,1,1],
+            [1,1,1,1,16,1,1,16,1,1,16,16,16,16,16,1,1,16,1,1,16,1,1,1,1],
+            [1,1,1,1,16,16,16,16,16,16,16,23,23,23,16,16,16,16,16,16,16,1,1,1,1],
+            [1,1,1,1,16,16,16,16,16,16,23,23,23,23,23,16,16,16,16,16,16,1,1,1,1],
+            [1,1,1,1,21,16,16,16,16,16,23,23,23,23,23,16,16,16,16,16,21,1,1,1,1],
+            [1,1,1,1,16,16,20,20,16,16,16,23,14,23,16,16,16,20,20,16,16,1,1,1,1],
+            [1,1,1,1,16,16,20,20,16,16,16,16,16,16,16,16,16,20,20,16,16,1,1,1,1],
+            [1,1,1,1,24,16,16,16,16,22,16,16,16,16,16,22,16,16,16,16,24,1,1,1,1],
+            [1,1,1,1,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,1,1,1,1],
+            [1,1,1,1,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,1,1,1,1],
+            [1,1,1,1,1,16,16,16,16,16,16,5,16,5,16,16,16,16,16,16,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ],
+        exits: [
+            { x: 11, y: 12, target: 'village', spawnX: 11, spawnY: 5 },
+            { x: 13, y: 12, target: 'village', spawnX: 13, spawnY: 5 }
+        ],
+        signs: [],
+        npcs: [
+            { x: 12, y: 7, name: 'Koning Floris', emoji: '👑',
+              dialog: ['Welkom in mijn kasteel, jonge trainer!',
+                       'Ik heb gehoord over jouw avonturen met de fabeldieren.',
+                       'Verken alle rijken en vang ze allemaal!',
+                       'Als je alle 40 fabeldieren hebt gevangen, kom dan terug voor een speciale beloning! 🏆'],
+              battle: false }
         ],
         houses: []
     },
