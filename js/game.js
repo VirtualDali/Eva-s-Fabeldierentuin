@@ -953,37 +953,60 @@ function openShop() {
         { key: 'voedsel', ...ITEMS.voedsel }
     ];
 
-    let shopText = '🏪 Winkel — Wat wil je kopen?\n';
-    items.forEach((item, i) => {
-        shopText += `${i + 1}. ${item.emoji} ${item.name} — €${item.price} (${gamePlayer.bag[item.key]}×)\n`;
-    });
-    shopText += '\nTik het nummer (1-4) of druk op Escape om te sluiten.';
+    function renderShop(msg) {
+        const dialogBox = document.getElementById('dialog-box');
+        dialogBox.style.display = 'block';
+        let html = '<div style="margin-bottom:6px;color:#f8d800;font-size:0.5rem;">🏪 Winkel</div>';
+        if (msg) html += `<div style="margin-bottom:6px;color:#00d800;font-size:0.4rem;">${msg}</div>`;
+        html += `<div style="margin-bottom:6px;font-size:0.4rem;color:#bcbcbc;">💰 €${gamePlayer.money}</div>`;
+        items.forEach((item, i) => {
+            html += `<button class="shop-buy-btn" data-index="${i}" style="display:block;width:100%;text-align:left;padding:4px 8px;margin:3px 0;background:#000058;color:#f8f8f8;border:2px solid #f8f8f8;font-family:var(--font);font-size:0.38rem;cursor:pointer;">
+                ${item.emoji} ${item.name} — €${item.price} (${gamePlayer.bag[item.key]}×)
+            </button>`;
+        });
+        html += `<button id="shop-close-btn" style="display:block;width:100%;text-align:center;padding:4px 8px;margin:6px 0 0;background:#a80020;color:#f8f8f8;border:2px solid #f8f8f8;font-family:var(--font);font-size:0.38rem;cursor:pointer;">✖ Sluiten</button>`;
+        document.getElementById('dialog-text').innerHTML = html;
 
-    document.getElementById('dialog-box').style.display = 'block';
-    document.getElementById('dialog-text').textContent = shopText;
+        // Attach buy handlers
+        document.querySelectorAll('.shop-buy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.dataset.index);
+                const item = items[idx];
+                if (gamePlayer.money >= item.price) {
+                    gamePlayer.money -= item.price;
+                    gamePlayer.bag[item.key]++;
+                    updateHUD();
+                    Storage.saveGame(buildSaveData());
+                    renderShop(`${item.emoji} ${item.name} gekocht!`);
+                } else {
+                    renderShop('Niet genoeg geld!');
+                }
+            });
+        });
 
-    const shopHandler = (e) => {
-        const num = parseInt(e.key);
-        if (num >= 1 && num <= 4) {
-            const item = items[num - 1];
-            if (gamePlayer.money >= item.price) {
-                gamePlayer.money -= item.price;
-                gamePlayer.bag[item.key]++;
-                updateHUD();
-                document.getElementById('dialog-text').textContent =
-                    `${item.emoji} ${item.name} gekocht! Je hebt nu ${gamePlayer.bag[item.key]}×. (€${gamePlayer.money} over)\n\nDruk nog een nummer of Escape om te sluiten.`;
-                Storage.saveGame(buildSaveData());
-            } else {
-                document.getElementById('dialog-text').textContent = `Niet genoeg geld! Je hebt €${gamePlayer.money}.\n\nDruk nog een nummer of Escape om te sluiten.`;
-            }
-        }
-        if (e.key === 'Escape' || e.key === ' ') {
-            window.removeEventListener('keydown', shopHandler);
-            dialogActive = false;
-            document.getElementById('dialog-box').style.display = 'none';
+        document.getElementById('shop-close-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeShop();
+        });
+    }
+
+    function closeShop() {
+        dialogActive = false;
+        document.getElementById('dialog-box').style.display = 'none';
+        document.getElementById('dialog-text').innerHTML = '';
+    }
+
+    // Also allow Escape to close
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            window.removeEventListener('keydown', escHandler);
+            closeShop();
         }
     };
-    window.addEventListener('keydown', shopHandler);
+    window.addEventListener('keydown', escHandler);
+
+    renderShop(null);
 }
 
 // --- Food Chest (Eva's House) ---
