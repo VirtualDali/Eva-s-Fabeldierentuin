@@ -55,6 +55,33 @@ function initStartScreen() {
     document.getElementById('btn-bag').addEventListener('click', () => openBagOverlay());
     document.getElementById('close-team').addEventListener('click', () => closeOverlay('overlay-team'));
     document.getElementById('close-bag').addEventListener('click', () => closeOverlay('overlay-bag'));
+
+    // Draw all fabeldieren on start screen
+    drawShowcase();
+}
+
+function drawShowcase() {
+    const showcase = document.getElementById('fabeldieren-showcase');
+    if (!showcase) return;
+    showcase.innerHTML = '';
+    ANIMAL_DEFS.forEach((def, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'dier-cell';
+        const c = document.createElement('canvas');
+        c.width = 64;
+        c.height = 64;
+        c.id = 'showcase-' + def.id;
+        cell.appendChild(c);
+        const naam = document.createElement('div');
+        naam.className = 'dier-naam';
+        naam.textContent = def.name;
+        cell.appendChild(naam);
+        showcase.appendChild(cell);
+        // Slight delay so canvases are in DOM
+        setTimeout(() => {
+            drawAnimalSprite('showcase-' + def.id, def.id, false);
+        }, 10);
+    });
 }
 
 function startNewGame() {
@@ -322,6 +349,18 @@ function handleInteract() {
         showDialog(['🍳 Een warm fornuis. Het ruikt heerlijk hier!']);
         return;
     }
+    if (tile === TILE.FOUNTAIN) {
+        showDialog(['⛲ Het water klatert rustig in de fontein...', '✨ Je voelt je verfrist! Een mooi plekje in het dorp.']);
+        return;
+    }
+    if (tile === TILE.CASTLE) {
+        showDialog(['🏰 De dikke stenen muren van het kasteel. Indrukwekkend!']);
+        return;
+    }
+    if (tile === TILE.CASTLE_DOOR) {
+        showDialog(['🏰 De grote kasteelpoort. Hier woont de koning van het dorp!', '👑 Misschien kun je hier later op bezoek komen...']);
+        return;
+    }
 }
 
 // --- Dialog System ---
@@ -373,250 +412,338 @@ function renderWorld() {
             const screenY = row * TILE_SIZE - camY;
 
             // Base color
-            ctx.fillStyle = TILE_COLORS[tile] || '#333';
+            ctx.fillStyle = TILE_COLORS[tile] || '#000';
             ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 
-            // Tall grass animation
+            // === DQ2 NES-style tile rendering ===
+
+            // Grass - DQ2 checkerboard pattern
+            if (tile === TILE.GRASS) {
+                ctx.fillStyle = '#00d800';
+                // Checkerboard dots like NES DQ2
+                if ((col + row) % 2 === 0) {
+                    ctx.fillRect(screenX + 2, screenY + 2, 2, 2);
+                    ctx.fillRect(screenX + 10, screenY + 10, 2, 2);
+                    ctx.fillRect(screenX + 6, screenY + 6, 2, 2);
+                } else {
+                    ctx.fillRect(screenX + 6, screenY + 2, 2, 2);
+                    ctx.fillRect(screenX + 2, screenY + 10, 2, 2);
+                    ctx.fillRect(screenX + 10, screenY + 6, 2, 2);
+                }
+            }
+
+            // Tall grass - DQ2 darker with grass blades
             if (tile === TILE.TALLGRASS) {
-                ctx.fillStyle = '#4a8c30';
-                const offset = ((col + row + animFrame) % 3);
-                ctx.fillRect(screenX + 2, screenY + 3 + offset, 2, 7);
-                ctx.fillRect(screenX + 7, screenY + 2 + offset, 2, 8);
-                ctx.fillRect(screenX + 12, screenY + 4 + offset, 2, 6);
-                ctx.fillStyle = '#5aaa38';
-                ctx.fillRect(screenX + 5, screenY + 5 + offset, 1, 5);
-                ctx.fillRect(screenX + 10, screenY + 3 + offset, 1, 7);
+                ctx.fillStyle = '#00a800';
+                ctx.fillRect(screenX + 2, screenY + 4, 2, 10);
+                ctx.fillRect(screenX + 6, screenY + 2, 2, 12);
+                ctx.fillRect(screenX + 10, screenY + 6, 2, 8);
+                ctx.fillRect(screenX + 14, screenY + 4, 2, 10);
+                ctx.fillStyle = '#00d800';
+                ctx.fillRect(screenX + 4, screenY + 6, 2, 8);
+                ctx.fillRect(screenX + 8, screenY + 4, 2, 10);
+                ctx.fillRect(screenX + 12, screenY + 8, 2, 6);
             }
 
-            // Water animation
+            // Water - DQ2 simple wave pattern
             if (tile === TILE.WATER) {
-                ctx.fillStyle = 'rgba(255,255,255,0.15)';
-                const waveOff = (animFrame + col) % 4;
-                ctx.fillRect(screenX + waveOff * 4, screenY + 6, 8, 2);
+                ctx.fillStyle = '#0098f8';
+                const waveOff = (animFrame + col) % 2;
+                ctx.fillRect(screenX, screenY + 4 + waveOff * 2, TILE_SIZE, 2);
+                ctx.fillRect(screenX, screenY + 10 + waveOff * 2, TILE_SIZE, 2);
+                ctx.fillStyle = '#58d8f8';
+                ctx.fillRect(screenX + 4, screenY + 2 + waveOff, 4, 2);
+                ctx.fillRect(screenX + 12, screenY + 8 + waveOff, 4, 2);
             }
 
-            // Lava animation
+            // Lava - NES style
             if (tile === TILE.LAVA) {
-                ctx.fillStyle = `rgba(255,${150 + animFrame * 20},0,0.6)`;
+                ctx.fillStyle = '#f87858';
                 ctx.fillRect(screenX + 2, screenY + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-                ctx.fillStyle = 'rgba(255,255,100,0.3)';
-                const lavaOff = (animFrame + row) % 3;
-                ctx.fillRect(screenX + 4 + lavaOff * 2, screenY + 4, 4, 4);
+                ctx.fillStyle = '#f8d800';
+                const lavaOff = (animFrame + row) % 2;
+                ctx.fillRect(screenX + 4 + lavaOff * 4, screenY + 4, 4, 4);
+                ctx.fillRect(screenX + 6 - lavaOff * 4, screenY + 10, 4, 4);
             }
 
-            // Emoji overlays for small tiles: skip emojis, draw pixel versions
+            // Tree - DQ2 round blob on trunk (very iconic)
             if (tile === TILE.TREE) {
                 // Trunk
-                ctx.fillStyle = '#5C3A1E';
-                ctx.fillRect(screenX + 6, screenY + 9, 4, 7);
-                // Leaves
-                ctx.fillStyle = '#1B5E20';
-                ctx.fillRect(screenX + 2, screenY + 2, 12, 8);
-                ctx.fillStyle = '#2E7D32';
-                ctx.fillRect(screenX + 4, screenY + 1, 8, 6);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 6, screenY + 10, 4, 6);
+                // Round canopy - NES style circle
+                ctx.fillStyle = '#005800';
+                ctx.fillRect(screenX + 4, screenY + 2, 8, 8);
+                ctx.fillRect(screenX + 2, screenY + 4, 12, 4);
+                // Highlight
+                ctx.fillStyle = '#00a800';
+                ctx.fillRect(screenX + 4, screenY + 2, 4, 4);
+                ctx.fillRect(screenX + 2, screenY + 4, 4, 2);
             } else if (tile === TILE.ROCK) {
-                ctx.fillStyle = '#78909C';
+                ctx.fillStyle = '#bcbcbc';
                 ctx.fillRect(screenX + 2, screenY + 4, 12, 10);
-                ctx.fillStyle = '#90A4AE';
-                ctx.fillRect(screenX + 3, screenY + 5, 10, 4);
+                ctx.fillStyle = '#e8e8e8';
+                ctx.fillRect(screenX + 4, screenY + 4, 8, 4);
+                ctx.fillStyle = '#747474';
+                ctx.fillRect(screenX + 2, screenY + 12, 12, 2);
             } else if (tile === TILE.SIGN) {
-                ctx.fillStyle = '#8B6914';
-                ctx.fillRect(screenX + 7, screenY + 8, 2, 6);
-                ctx.fillStyle = '#D2B48C';
-                ctx.fillRect(screenX + 3, screenY + 3, 10, 6);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 7, screenY + 8, 2, 8);
+                ctx.fillStyle = '#f8d878';
+                ctx.fillRect(screenX + 3, screenY + 2, 10, 6);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 4, screenY + 4, 8, 2);
             } else if (tile === TILE.HOUSE) {
-                // Better house tile - brick wall with details
-                // Wall base
-                ctx.fillStyle = '#FFCC80';
+                // DQ2 NES house - simple colored block
+                ctx.fillStyle = '#f8d878';
                 ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
-                // Brick pattern
-                ctx.fillStyle = '#E8B866';
-                ctx.fillRect(screenX, screenY + 4, TILE_SIZE, 1);
-                ctx.fillRect(screenX, screenY + 9, TILE_SIZE, 1);
-                ctx.fillRect(screenX + 5, screenY, 1, 4);
-                ctx.fillRect(screenX + 11, screenY + 5, 1, 4);
-                ctx.fillRect(screenX + 5, screenY + 10, 1, 6);
-                // Roof overhang (top of house tiles)
+                // Brick lines
+                ctx.fillStyle = '#f87858';
+                ctx.fillRect(screenX, screenY + 4, TILE_SIZE, 2);
+                ctx.fillRect(screenX, screenY + 10, TILE_SIZE, 2);
+                ctx.fillRect(screenX + 8, screenY, 2, 4);
+                ctx.fillRect(screenX + 4, screenY + 6, 2, 4);
+                ctx.fillRect(screenX + 12, screenY + 6, 2, 4);
+                // Roof on top
                 const aboveTile = (row > 0) ? map.tiles[row - 1][col] : -1;
                 if (aboveTile !== TILE.HOUSE && aboveTile !== TILE.DOOR) {
-                    ctx.fillStyle = '#B71C1C';
-                    ctx.fillRect(screenX - 1, screenY, TILE_SIZE + 2, 4);
-                    ctx.fillStyle = '#D32F2F';
-                    ctx.fillRect(screenX, screenY, TILE_SIZE, 2);
+                    ctx.fillStyle = '#a80020';
+                    ctx.fillRect(screenX, screenY, TILE_SIZE, 4);
+                    ctx.fillStyle = '#f83800';
+                    ctx.fillRect(screenX + 2, screenY, TILE_SIZE - 4, 2);
                 }
-                // Window if in middle of house (not adjacent to door row)
+                // Window
                 const belowTile = (row < MAP_ROWS - 1) ? map.tiles[row + 1][col] : -1;
                 if (belowTile !== TILE.DOOR && aboveTile !== TILE.DOOR && belowTile === TILE.HOUSE) {
-                    ctx.fillStyle = '#81D4FA';
-                    ctx.fillRect(screenX + 4, screenY + 5, 8, 7);
-                    ctx.fillStyle = '#8B6914';
-                    ctx.fillRect(screenX + 8, screenY + 5, 1, 7);
-                    ctx.fillRect(screenX + 4, screenY + 8, 8, 1);
+                    ctx.fillStyle = '#0058f8';
+                    ctx.fillRect(screenX + 4, screenY + 6, 8, 6);
+                    ctx.fillStyle = '#58d8f8';
+                    ctx.fillRect(screenX + 4, screenY + 6, 4, 2);
+                    ctx.fillStyle = '#f8d878';
+                    ctx.fillRect(screenX + 8, screenY + 6, 1, 6);
+                    ctx.fillRect(screenX + 4, screenY + 9, 8, 1);
                 }
             } else if (tile === TILE.DOOR) {
-                // Wall behind door
-                ctx.fillStyle = '#FFCC80';
+                ctx.fillStyle = '#f8d878';
                 ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
-                // Door frame
-                ctx.fillStyle = '#5D4037';
-                ctx.fillRect(screenX + 3, screenY + 1, 10, 15);
                 // Door
-                ctx.fillStyle = '#795548';
+                ctx.fillStyle = '#824100';
                 ctx.fillRect(screenX + 4, screenY + 2, 8, 14);
-                // Door panels
-                ctx.fillStyle = '#6D4C41';
-                ctx.fillRect(screenX + 5, screenY + 3, 6, 4);
-                ctx.fillRect(screenX + 5, screenY + 9, 6, 5);
-                // Handle
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(screenX + 10, screenY + 10, 1, 2);
-                // Welcome mat
-                ctx.fillStyle = '#8D6E63';
-                ctx.fillRect(screenX + 2, screenY + 15, 12, 1);
+                ctx.fillStyle = '#a85800';
+                ctx.fillRect(screenX + 6, screenY + 4, 4, 10);
+                // Knob
+                ctx.fillStyle = '#f8d800';
+                ctx.fillRect(screenX + 10, screenY + 10, 2, 2);
             } else if (tile === TILE.HEAL) {
-                ctx.fillStyle = '#FF69B4';
-                ctx.fillRect(screenX + 6, screenY + 3, 4, 10);
-                ctx.fillRect(screenX + 3, screenY + 6, 10, 4);
+                // DQ2 church/heal - cross
+                ctx.fillStyle = '#f8f8f8';
+                ctx.fillRect(screenX + 6, screenY + 2, 4, 12);
+                ctx.fillRect(screenX + 2, screenY + 6, 12, 4);
+                ctx.fillStyle = '#f878f8';
+                ctx.fillRect(screenX + 7, screenY + 3, 2, 10);
+                ctx.fillRect(screenX + 3, screenY + 7, 10, 2);
             } else if (tile === TILE.SHOP) {
-                ctx.fillStyle = '#7B1FA2';
-                ctx.fillRect(screenX + 1, screenY + 2, 14, 5);
-                ctx.fillStyle = '#E1BEE7';
-                ctx.fillRect(screenX + 2, screenY + 7, 12, 8);
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(screenX + 6, screenY + 9, 4, 4);
+                // DQ2 shop
+                ctx.fillStyle = '#6844fc';
+                ctx.fillRect(screenX + 2, screenY + 2, 12, 4);
+                ctx.fillStyle = '#f8f8f8';
+                ctx.fillRect(screenX + 2, screenY + 6, 12, 8);
+                ctx.fillStyle = '#f8d800';
+                ctx.fillRect(screenX + 6, screenY + 8, 4, 4);
             } else if (tile === TILE.BED) {
-                // Bed frame
-                ctx.fillStyle = '#5D4037';
-                ctx.fillRect(screenX + 1, screenY + 2, 14, 12);
-                // Mattress
-                ctx.fillStyle = '#E8D5E0';
-                ctx.fillRect(screenX + 2, screenY + 3, 12, 10);
-                // Pillow
-                ctx.fillStyle = '#F5F5F5';
-                ctx.fillRect(screenX + 3, screenY + 4, 5, 3);
-                // Blanket
-                ctx.fillStyle = '#7B1FA2';
-                ctx.fillRect(screenX + 2, screenY + 8, 12, 5);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 2, screenY + 4, 12, 10);
+                ctx.fillStyle = '#f8f8f8';
+                ctx.fillRect(screenX + 4, screenY + 6, 4, 2);
+                ctx.fillStyle = '#0058f8';
+                ctx.fillRect(screenX + 4, screenY + 8, 8, 4);
             } else if (tile === TILE.TABLE) {
-                // Table top
-                ctx.fillStyle = '#8B6914';
-                ctx.fillRect(screenX + 1, screenY + 4, 14, 3);
-                // Table legs
-                ctx.fillStyle = '#5D4037';
-                ctx.fillRect(screenX + 2, screenY + 7, 2, 7);
-                ctx.fillRect(screenX + 12, screenY + 7, 2, 7);
-                // Item on table
-                ctx.fillStyle = '#FF9800';
-                ctx.fillRect(screenX + 6, screenY + 2, 4, 3);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 2, screenY + 6, 12, 2);
+                ctx.fillRect(screenX + 4, screenY + 8, 2, 6);
+                ctx.fillRect(screenX + 10, screenY + 8, 2, 6);
             } else if (tile === TILE.BOOKSHELF) {
-                // Shelf frame
-                ctx.fillStyle = '#5D4037';
-                ctx.fillRect(screenX + 1, screenY + 1, 14, 14);
-                // Shelves
-                ctx.fillStyle = '#8B6914';
-                ctx.fillRect(screenX + 2, screenY + 5, 12, 1);
-                ctx.fillRect(screenX + 2, screenY + 9, 12, 1);
-                // Books (colored blocks)
-                ctx.fillStyle = '#E53935';
-                ctx.fillRect(screenX + 3, screenY + 2, 2, 3);
-                ctx.fillStyle = '#43A047';
-                ctx.fillRect(screenX + 6, screenY + 2, 2, 3);
-                ctx.fillStyle = '#1E88E5';
-                ctx.fillRect(screenX + 9, screenY + 2, 3, 3);
-                ctx.fillStyle = '#FDD835';
-                ctx.fillRect(screenX + 3, screenY + 6, 2, 3);
-                ctx.fillStyle = '#AB47BC';
-                ctx.fillRect(screenX + 6, screenY + 6, 3, 3);
-                ctx.fillStyle = '#FF7043';
-                ctx.fillRect(screenX + 10, screenY + 6, 2, 3);
-                ctx.fillStyle = '#26A69A';
-                ctx.fillRect(screenX + 3, screenY + 10, 3, 3);
-                ctx.fillStyle = '#EF5350';
-                ctx.fillRect(screenX + 7, screenY + 10, 2, 3);
-                ctx.fillStyle = '#5C6BC0';
-                ctx.fillRect(screenX + 10, screenY + 10, 2, 3);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 2, screenY + 2, 12, 12);
+                ctx.fillStyle = '#f83800';
+                ctx.fillRect(screenX + 4, screenY + 4, 2, 4);
+                ctx.fillStyle = '#0058f8';
+                ctx.fillRect(screenX + 7, screenY + 4, 2, 4);
+                ctx.fillStyle = '#00a800';
+                ctx.fillRect(screenX + 10, screenY + 4, 2, 4);
+                ctx.fillStyle = '#f8d800';
+                ctx.fillRect(screenX + 4, screenY + 9, 3, 3);
+                ctx.fillStyle = '#a80020';
+                ctx.fillRect(screenX + 8, screenY + 9, 3, 3);
             } else if (tile === TILE.CHEST) {
-                // Chest body
-                ctx.fillStyle = '#8B6914';
-                ctx.fillRect(screenX + 2, screenY + 5, 12, 9);
-                // Chest lid
-                ctx.fillStyle = '#A0522D';
-                ctx.fillRect(screenX + 2, screenY + 3, 12, 4);
-                // Metal band
-                ctx.fillStyle = '#B0BEC5';
-                ctx.fillRect(screenX + 2, screenY + 5, 12, 1);
-                // Lock
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(screenX + 7, screenY + 7, 2, 2);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 2, screenY + 6, 12, 8);
+                ctx.fillStyle = '#a85800';
+                ctx.fillRect(screenX + 2, screenY + 4, 12, 4);
+                ctx.fillStyle = '#f8d800';
+                ctx.fillRect(screenX + 7, screenY + 8, 2, 2);
             } else if (tile === TILE.FOOD_CHEST) {
-                // Food chest body (green tinted)
-                ctx.fillStyle = '#2E7D32';
-                ctx.fillRect(screenX + 2, screenY + 5, 12, 9);
-                // Chest lid
-                ctx.fillStyle = '#388E3C';
-                ctx.fillRect(screenX + 2, screenY + 3, 12, 4);
-                // Metal band
-                ctx.fillStyle = '#B0BEC5';
-                ctx.fillRect(screenX + 2, screenY + 5, 12, 1);
-                // Apple icon
-                ctx.fillStyle = '#F44336';
-                ctx.fillRect(screenX + 6, screenY + 8, 4, 3);
-                ctx.fillStyle = '#4CAF50';
-                ctx.fillRect(screenX + 7, screenY + 7, 2, 1);
+                ctx.fillStyle = '#00a800';
+                ctx.fillRect(screenX + 2, screenY + 6, 12, 8);
+                ctx.fillStyle = '#005800';
+                ctx.fillRect(screenX + 2, screenY + 4, 12, 4);
+                ctx.fillStyle = '#f83800';
+                ctx.fillRect(screenX + 6, screenY + 8, 4, 4);
             } else if (tile === TILE.RUG) {
-                // Rug pattern
-                ctx.fillStyle = '#C4626A';
+                ctx.fillStyle = '#a80020';
                 ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
-                ctx.fillStyle = '#D4848A';
-                ctx.fillRect(screenX + 2, screenY + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-                ctx.fillStyle = '#C4626A';
-                ctx.fillRect(screenX + 4, screenY + 4, TILE_SIZE - 8, TILE_SIZE - 8);
+                ctx.fillStyle = '#f83800';
+                ctx.fillRect(screenX + 2, screenY + 2, 12, 12);
+                ctx.fillStyle = '#a80020';
+                ctx.fillRect(screenX + 4, screenY + 4, 8, 8);
             } else if (tile === TILE.PLANT_POT) {
-                // Pot
-                ctx.fillStyle = '#D84315';
-                ctx.fillRect(screenX + 4, screenY + 9, 8, 6);
-                ctx.fillRect(screenX + 3, screenY + 8, 10, 2);
-                // Plant
-                ctx.fillStyle = '#2E7D32';
-                ctx.fillRect(screenX + 6, screenY + 3, 4, 6);
-                ctx.fillRect(screenX + 3, screenY + 2, 4, 4);
-                ctx.fillRect(screenX + 9, screenY + 2, 4, 4);
-                ctx.fillStyle = '#43A047';
-                ctx.fillRect(screenX + 5, screenY + 4, 2, 3);
+                ctx.fillStyle = '#f83800';
+                ctx.fillRect(screenX + 4, screenY + 10, 8, 6);
+                ctx.fillStyle = '#00a800';
+                ctx.fillRect(screenX + 4, screenY + 2, 8, 8);
+                ctx.fillStyle = '#005800';
+                ctx.fillRect(screenX + 6, screenY + 4, 4, 4);
             } else if (tile === TILE.WINDOW_TILE) {
-                // Wall with window
-                ctx.fillStyle = '#6B4226';
+                ctx.fillStyle = '#824100';
                 ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
-                // Window frame
-                ctx.fillStyle = '#8B6914';
-                ctx.fillRect(screenX + 3, screenY + 3, 10, 10);
-                // Window glass
-                ctx.fillStyle = '#81D4FA';
+                ctx.fillStyle = '#0058f8';
+                ctx.fillRect(screenX + 4, screenY + 4, 8, 8);
+                ctx.fillStyle = '#58d8f8';
                 ctx.fillRect(screenX + 4, screenY + 4, 4, 4);
-                ctx.fillRect(screenX + 9, screenY + 4, 3, 4);
-                ctx.fillRect(screenX + 4, screenY + 9, 4, 3);
-                ctx.fillRect(screenX + 9, screenY + 9, 3, 3);
-                // Window cross
-                ctx.fillStyle = '#8B6914';
+                ctx.fillStyle = '#824100';
                 ctx.fillRect(screenX + 8, screenY + 4, 1, 8);
                 ctx.fillRect(screenX + 4, screenY + 8, 8, 1);
             } else if (tile === TILE.STOVE) {
-                // Stove body
-                ctx.fillStyle = '#455A64';
-                ctx.fillRect(screenX + 2, screenY + 3, 12, 12);
-                // Stove top
-                ctx.fillStyle = '#37474F';
-                ctx.fillRect(screenX + 2, screenY + 2, 12, 3);
-                // Burners
-                ctx.fillStyle = '#EF5350';
-                ctx.fillRect(screenX + 4, screenY + 3, 3, 2);
-                ctx.fillRect(screenX + 9, screenY + 3, 3, 2);
-                // Oven door
-                ctx.fillStyle = '#546E7A';
-                ctx.fillRect(screenX + 4, screenY + 8, 8, 5);
-                // Handle
-                ctx.fillStyle = '#B0BEC5';
-                ctx.fillRect(screenX + 5, screenY + 9, 6, 1);
+                ctx.fillStyle = '#747474';
+                ctx.fillRect(screenX + 2, screenY + 4, 12, 12);
+                ctx.fillStyle = '#bcbcbc';
+                ctx.fillRect(screenX + 2, screenY + 2, 12, 4);
+                ctx.fillStyle = '#f83800';
+                ctx.fillRect(screenX + 4, screenY + 4, 4, 2);
+                ctx.fillRect(screenX + 10, screenY + 4, 4, 2);
+            } else if (tile === TILE.FOUNTAIN) {
+                // DQ2 fountain - stone basin with water
+                ctx.fillStyle = '#bcbcbc';
+                ctx.fillRect(screenX + 2, screenY + 10, 12, 6);
+                ctx.fillStyle = '#e8e8e8';
+                ctx.fillRect(screenX + 4, screenY + 8, 8, 2);
+                ctx.fillStyle = '#0058f8';
+                ctx.fillRect(screenX + 4, screenY + 10, 8, 4);
+                // Pillar
+                ctx.fillStyle = '#e8e8e8';
+                ctx.fillRect(screenX + 7, screenY + 4, 2, 6);
+                // Water spray
+                ctx.fillStyle = '#58d8f8';
+                const sprayOff = animFrame % 2;
+                ctx.fillRect(screenX + 6, screenY + 2 + sprayOff, 2, 2);
+                ctx.fillRect(screenX + 8, screenY + 2 + sprayOff, 2, 2);
+                ctx.fillStyle = '#f8f8f8';
+                ctx.fillRect(screenX + 7, screenY + 1 + sprayOff, 2, 2);
+            } else if (tile === TILE.CASTLE) {
+                // DQ2 NES castle wall
+                ctx.fillStyle = '#bcbcbc';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#747474';
+                ctx.fillRect(screenX, screenY + 4, TILE_SIZE, 2);
+                ctx.fillRect(screenX, screenY + 10, TILE_SIZE, 2);
+                ctx.fillRect(screenX + 8, screenY, 2, 4);
+                ctx.fillRect(screenX + 4, screenY + 6, 2, 4);
+                ctx.fillRect(screenX + 12, screenY + 6, 2, 4);
+                // Battlements
+                const aboveTile2 = (row > 0) ? map.tiles[row - 1][col] : -1;
+                if (aboveTile2 !== TILE.CASTLE && aboveTile2 !== TILE.CASTLE_DOOR) {
+                    ctx.fillStyle = '#bcbcbc';
+                    ctx.fillRect(screenX, screenY - 2, 4, 4);
+                    ctx.fillRect(screenX + 6, screenY - 2, 4, 4);
+                    ctx.fillRect(screenX + 12, screenY - 2, 4, 4);
+                    ctx.fillStyle = '#747474';
+                    ctx.fillRect(screenX + 4, screenY, 2, 2);
+                    ctx.fillRect(screenX + 10, screenY, 2, 2);
+                }
+                // Flag on some
+                if ((col + row) % 5 === 0) {
+                    ctx.fillStyle = '#a80020';
+                    ctx.fillRect(screenX + 6, screenY + 5, 4, 4);
+                    ctx.fillStyle = '#f8d800';
+                    ctx.fillRect(screenX + 7, screenY + 6, 2, 2);
+                }
+            } else if (tile === TILE.CASTLE_DOOR) {
+                ctx.fillStyle = '#bcbcbc';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(screenX + 4, screenY + 2, 8, 14);
+                ctx.fillStyle = '#a85800';
+                ctx.fillRect(screenX + 6, screenY + 4, 4, 12);
+                ctx.fillStyle = '#f8d800';
+                ctx.fillRect(screenX + 6, screenY + 10, 2, 2);
+                ctx.fillRect(screenX + 8, screenY + 10, 2, 2);
+            } else if (tile === TILE.ICE) {
+                // Frozen ice block - NES style
+                ctx.fillStyle = '#a8d8f8';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#c8e8f8';
+                ctx.fillRect(screenX + 2, screenY + 2, 4, 4);
+                ctx.fillRect(screenX + 10, screenY + 10, 4, 4);
+                ctx.fillStyle = '#78b8e8';
+                ctx.fillRect(screenX + 8, screenY + 4, 2, 2);
+                ctx.fillRect(screenX + 4, screenY + 12, 2, 2);
+            } else if (tile === TILE.SNOW) {
+                // Snowy ground - walkable
+                ctx.fillStyle = '#f0f0f8';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#d8d8e8';
+                if ((col + row) % 2 === 0) {
+                    ctx.fillRect(screenX + 2, screenY + 4, 2, 2);
+                    ctx.fillRect(screenX + 10, screenY + 10, 2, 2);
+                } else {
+                    ctx.fillRect(screenX + 6, screenY + 2, 2, 2);
+                    ctx.fillRect(screenX + 12, screenY + 8, 2, 2);
+                }
+                ctx.fillStyle = '#e8e8f0';
+                ctx.fillRect(screenX + 6, screenY + 6, 2, 2);
+            } else if (tile === TILE.SWAMP) {
+                // Swamp ground - dark murky
+                ctx.fillStyle = '#3a5828';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#4a6838';
+                ctx.fillRect(screenX + 2, screenY + 4, 4, 2);
+                ctx.fillRect(screenX + 10, screenY + 8, 4, 2);
+                ctx.fillStyle = '#2a4818';
+                ctx.fillRect(screenX + 8, screenY + 2, 2, 2);
+                ctx.fillRect(screenX + 4, screenY + 12, 2, 2);
+                // Mushroom dot
+                if ((col * 7 + row * 3) % 11 === 0) {
+                    ctx.fillStyle = '#f83800';
+                    ctx.fillRect(screenX + 6, screenY + 10, 4, 2);
+                    ctx.fillStyle = '#f8f8f8';
+                    ctx.fillRect(screenX + 7, screenY + 10, 1, 1);
+                    ctx.fillStyle = '#824100';
+                    ctx.fillRect(screenX + 7, screenY + 12, 2, 2);
+                }
+            } else if (tile === TILE.RUINS_FLOOR) {
+                // Ancient stone floor
+                ctx.fillStyle = '#a89880';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#988870';
+                ctx.fillRect(screenX, screenY + 8, TILE_SIZE, 1);
+                ctx.fillRect(screenX + 8, screenY, 1, TILE_SIZE);
+                ctx.fillStyle = '#b8a890';
+                ctx.fillRect(screenX + 2, screenY + 2, 4, 4);
+                ctx.fillRect(screenX + 10, screenY + 10, 4, 4);
+            } else if (tile === TILE.RUINS_WALL) {
+                // Ancient ruins wall with cracks
+                ctx.fillStyle = '#686058';
+                ctx.fillRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+                ctx.fillStyle = '#787068';
+                ctx.fillRect(screenX + 2, screenY + 2, 12, 4);
+                ctx.fillRect(screenX + 2, screenY + 10, 12, 4);
+                ctx.fillStyle = '#585048';
+                ctx.fillRect(screenX + 8, screenY + 2, 2, 4);
+                ctx.fillRect(screenX + 4, screenY + 10, 2, 4);
+                // Cracks
+                ctx.fillStyle = '#484038';
+                ctx.fillRect(screenX + 6, screenY + 6, 1, 4);
+                ctx.fillRect(screenX + 10, screenY + 8, 4, 1);
             }
 
             // Exit indicator
@@ -632,71 +759,63 @@ function renderWorld() {
         }
     }
 
-    // Draw NPCs as pixel characters
+    // Draw NPCs - DQ2 NES style simple sprites
     if (map.npcs) {
         map.npcs.forEach(npc => {
             const sx = npc.x * TILE_SIZE - camX;
             const sy = npc.y * TILE_SIZE - camY;
             if (sx > -TILE_SIZE && sx < canvas.width + TILE_SIZE && sy > -TILE_SIZE && sy < canvas.height + TILE_SIZE) {
-                // NPC color scheme based on name
-                let shirtColor = '#6A1B9A';
-                let hairColor = '#5D4037';
-                let pantsColor = '#4A7ABF';
-                if (npc.name.includes('Willow')) { shirtColor = '#1565C0'; hairColor = '#9E9E9E'; }
-                else if (npc.name.includes('Mila')) { shirtColor = '#2E7D32'; hairColor = '#E65100'; }
-                else if (npc.name.includes('Sven')) { shirtColor = '#4E342E'; hairColor = '#212121'; }
-                else if (npc.name.includes('Kai')) { shirtColor = '#B71C1C'; hairColor = '#FF6F00'; pantsColor = '#37474F'; }
-                else if (npc.name.includes('Lars')) { shirtColor = '#0D47A1'; hairColor = '#FFD54F'; }
+                // NPC palette based on name (NES limited colors)
+                let tunicColor = '#6844fc';
+                let tunicLight = '#a878fc';
+                let hairColor = '#824100';
+                let skinColor = '#f8b878';
+                if (npc.name.includes('Willow')) { tunicColor = '#0058f8'; tunicLight = '#58b8f8'; hairColor = '#bcbcbc'; }
+                else if (npc.name.includes('Mila')) { tunicColor = '#00a800'; tunicLight = '#00d800'; hairColor = '#f83800'; }
+                else if (npc.name.includes('Sven')) { tunicColor = '#824100'; tunicLight = '#a85800'; hairColor = '#3c3c3c'; }
+                else if (npc.name.includes('Kai')) { tunicColor = '#f83800'; tunicLight = '#f87858'; hairColor = '#f8d800'; }
+                else if (npc.name.includes('Lars')) { tunicColor = '#0058f8'; tunicLight = '#58b8f8'; hairColor = '#f8d800'; }
+                else if (npc.name.includes('Amira')) { tunicColor = '#f8d800'; tunicLight = '#f8f878'; hairColor = '#1a1a2e'; }
+                else if (npc.name.includes('Freya')) { tunicColor = '#58d8f8'; tunicLight = '#a8f8f8'; hairColor = '#f0f0f8'; }
+                else if (npc.name.includes('Hilda')) { tunicColor = '#6844fc'; tunicLight = '#a878fc'; hairColor = '#005800'; }
+                else if (npc.name.includes('Theron')) { tunicColor = '#bcbcbc'; tunicLight = '#e8e8e8'; hairColor = '#824100'; }
 
-                // Shadow
-                ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                ctx.fillRect(sx + 2, sy + TILE_SIZE - 2, 12, 2);
-
-                // Shoes
-                ctx.fillStyle = '#3E2723';
-                ctx.fillRect(sx + 3, sy + 14, 4, 2);
-                ctx.fillRect(sx + 9, sy + 14, 4, 2);
-
+                // Feet
+                ctx.fillStyle = '#824100';
+                ctx.fillRect(sx + 4, sy + 14, 3, 2);
+                ctx.fillRect(sx + 9, sy + 14, 3, 2);
                 // Legs
-                ctx.fillStyle = pantsColor;
-                ctx.fillRect(sx + 4, sy + 11, 3, 3);
-                ctx.fillRect(sx + 9, sy + 11, 3, 3);
-
+                ctx.fillStyle = tunicColor;
+                ctx.fillRect(sx + 4, sy + 12, 3, 2);
+                ctx.fillRect(sx + 9, sy + 12, 3, 2);
                 // Body
-                ctx.fillStyle = shirtColor;
-                ctx.fillRect(sx + 3, sy + 5, 10, 6);
-
+                ctx.fillStyle = tunicColor;
+                ctx.fillRect(sx + 4, sy + 6, 8, 6);
+                ctx.fillStyle = tunicLight;
+                ctx.fillRect(sx + 6, sy + 6, 4, 4);
                 // Arms
-                ctx.fillStyle = shirtColor;
-                ctx.fillRect(sx + 1, sy + 5, 2, 5);
-                ctx.fillRect(sx + 13, sy + 5, 2, 5);
-                // Hands
-                ctx.fillStyle = '#FDDCB5';
-                ctx.fillRect(sx + 1, sy + 10, 2, 1);
-                ctx.fillRect(sx + 13, sy + 10, 2, 1);
-
+                ctx.fillStyle = tunicColor;
+                ctx.fillRect(sx + 2, sy + 6, 2, 4);
+                ctx.fillRect(sx + 12, sy + 6, 2, 4);
+                ctx.fillStyle = skinColor;
+                ctx.fillRect(sx + 2, sy + 10, 2, 2);
+                ctx.fillRect(sx + 12, sy + 10, 2, 2);
                 // Head
-                ctx.fillStyle = '#FDDCB5';
-                ctx.fillRect(sx + 4, sy + 1, 8, 5);
-
+                ctx.fillStyle = skinColor;
+                ctx.fillRect(sx + 4, sy + 2, 8, 4);
                 // Hair
                 ctx.fillStyle = hairColor;
-                ctx.fillRect(sx + 3, sy + 0, 10, 2);
-                ctx.fillRect(sx + 3, sy + 1, 2, 3);
-                ctx.fillRect(sx + 11, sy + 1, 2, 3);
-
+                ctx.fillRect(sx + 4, sy + 0, 8, 2);
+                ctx.fillRect(sx + 4, sy + 2, 2, 2);
+                ctx.fillRect(sx + 10, sy + 2, 2, 2);
                 // Eyes
-                ctx.fillStyle = '#1a1a2e';
-                ctx.fillRect(sx + 5, sy + 3, 2, 2);
-                ctx.fillRect(sx + 9, sy + 3, 2, 2);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(sx + 6, sy + 4, 2, 2);
+                ctx.fillRect(sx + 10, sy + 4, 2, 2);
 
-                // Mouth
-                ctx.fillStyle = '#D4896A';
-                ctx.fillRect(sx + 7, sy + 5, 2, 1);
-
-                // Name above NPC
+                // Name label
                 ctx.font = '5px "Press Start 2P"';
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = '#f8f8f8';
                 ctx.textAlign = 'center';
                 ctx.fillText(npc.name.split(' ')[0], sx + TILE_SIZE / 2, sy - 2);
             }
@@ -713,81 +832,107 @@ function drawPlayer(x, y) {
     const bobOffset = isMoving ? Math.round(Math.sin(moveAnimTimer * 0.8) * 1) : 0;
     const walkFrame = isMoving ? (moveAnimTimer % 2) : 0;
 
-    // Shadow
-    ctx.fillStyle = 'rgba(0,0,0,0.3)';
-    ctx.fillRect(x + 2, y + TILE_SIZE - 2, 12, 2);
+    // === Eva in gele jurk met lang blond haar ===
 
-    // Shoes
-    ctx.fillStyle = '#4E342E';
-    ctx.fillRect(x + 3, y + 14 + bobOffset, 4, 2);
-    ctx.fillRect(x + 9, y + 14 + bobOffset, 4, 2);
+    // Long hair behind body (flows down the back)
+    ctx.fillStyle = '#f8d800';
+    ctx.fillRect(x + 3, y + 2 + bobOffset, 2, 10);
+    ctx.fillRect(x + 11, y + 2 + bobOffset, 2, 10);
+    ctx.fillStyle = '#d8a800';
+    ctx.fillRect(x + 3, y + 10 + bobOffset, 2, 4);
+    ctx.fillRect(x + 11, y + 10 + bobOffset, 2, 4);
 
-    // Legs (jeans) - walking animation
-    ctx.fillStyle = '#4A7ABF';
-    if (walkFrame === 0 || bobOffset === 0) {
-        ctx.fillRect(x + 4, y + 11 + bobOffset, 3, 3);
-        ctx.fillRect(x + 9, y + 11 + bobOffset, 3, 3);
+    // Schoentjes (bruin)
+    ctx.fillStyle = '#824100';
+    if (walkFrame === 1 && isMoving) {
+        ctx.fillRect(x + 3, y + 14 + bobOffset, 4, 2);
+        ctx.fillRect(x + 10, y + 14 + bobOffset, 4, 2);
     } else {
-        ctx.fillRect(x + 3, y + 11 + bobOffset, 3, 3);
-        ctx.fillRect(x + 10, y + 11 + bobOffset, 3, 3);
+        ctx.fillRect(x + 4, y + 14 + bobOffset, 3, 2);
+        ctx.fillRect(x + 9, y + 14 + bobOffset, 3, 2);
     }
 
-    // Body - navy jacket
-    ctx.fillStyle = '#1B2A4A';
-    ctx.fillRect(x + 3, y + 5 + bobOffset, 10, 6);
-
-    // Orange stripes on jacket (two stripes)
-    ctx.fillStyle = '#D4760A';
-    ctx.fillRect(x + 3, y + 9 + bobOffset, 10, 1);
-    ctx.fillRect(x + 3, y + 7 + bobOffset, 10, 1);
-
-    // Arms - swing when walking
-    ctx.fillStyle = '#1B2A4A';
-    if (bobOffset !== 0) {
-        // Left arm forward, right arm back
-        ctx.fillRect(x + 1, y + 5 + bobOffset + (walkFrame === 0 ? 1 : -1), 2, 5);
-        ctx.fillRect(x + 13, y + 5 + bobOffset + (walkFrame === 0 ? -1 : 1), 2, 5);
+    // Rok van jurk (geel, uitlopend)
+    ctx.fillStyle = '#f8d800';
+    if (walkFrame === 1 && isMoving) {
+        ctx.fillRect(x + 2, y + 10 + bobOffset, 6, 4);
+        ctx.fillRect(x + 9, y + 10 + bobOffset, 6, 4);
     } else {
-        ctx.fillRect(x + 1, y + 5 + bobOffset, 2, 5);
-        ctx.fillRect(x + 13, y + 5 + bobOffset, 2, 5);
+        ctx.fillRect(x + 3, y + 10 + bobOffset, 10, 4);
     }
-    // Hands (skin color)
-    ctx.fillStyle = '#FDDCB5';
-    ctx.fillRect(x + 1, y + 10 + bobOffset + (bobOffset !== 0 && walkFrame === 0 ? 1 : 0), 2, 1);
-    ctx.fillRect(x + 13, y + 10 + bobOffset + (bobOffset !== 0 && walkFrame !== 0 ? 1 : 0), 2, 1);
+    // Rok highlight
+    ctx.fillStyle = '#f8f858';
+    ctx.fillRect(x + 4, y + 10 + bobOffset, 8, 1);
+    // Rok schaduw onder
+    ctx.fillStyle = '#d8a800';
+    ctx.fillRect(x + 3, y + 13 + bobOffset, 10, 1);
 
-    // Head (skin)
-    ctx.fillStyle = '#FDDCB5';
+    // Lijfje van jurk (geel)
+    ctx.fillStyle = '#f8d800';
+    ctx.fillRect(x + 4, y + 5 + bobOffset, 8, 5);
+    // Lijfje highlight
+    ctx.fillStyle = '#f8f858';
+    ctx.fillRect(x + 5, y + 5 + bobOffset, 6, 3);
+    // Kraag (wit, v-vorm)
+    ctx.fillStyle = '#f8f8f8';
+    ctx.fillRect(x + 6, y + 5 + bobOffset, 4, 1);
+    ctx.fillRect(x + 7, y + 6 + bobOffset, 2, 1);
+
+    // Mouwen (korte pofmouwtjes, geel)
+    ctx.fillStyle = '#f8d800';
+    ctx.fillRect(x + 2, y + 5 + bobOffset, 2, 3);
+    ctx.fillRect(x + 12, y + 5 + bobOffset, 2, 3);
+    // Armen (huidkleur)
+    ctx.fillStyle = '#f8b878';
+    ctx.fillRect(x + 2, y + 8 + bobOffset, 2, 3);
+    ctx.fillRect(x + 12, y + 8 + bobOffset, 2, 3);
+    // Handen
+    ctx.fillStyle = '#f8b878';
+    ctx.fillRect(x + 1, y + 10 + bobOffset, 2, 1);
+    ctx.fillRect(x + 13, y + 10 + bobOffset, 2, 1);
+
+    // Hoofd (huidkleur)
+    ctx.fillStyle = '#f8b878';
     ctx.fillRect(x + 4, y + 1 + bobOffset, 8, 5);
 
-    // Hair (light blonde, blocky curls)
-    ctx.fillStyle = '#D4A04A';
-    ctx.fillRect(x + 3, y + 0 + bobOffset, 10, 2);
-    ctx.fillRect(x + 3, y + 1 + bobOffset, 2, 4);
-    ctx.fillRect(x + 11, y + 1 + bobOffset, 2, 4);
-    // Curl detail
-    ctx.fillStyle = '#C49040';
-    ctx.fillRect(x + 3, y + 4 + bobOffset, 1, 2);
-    ctx.fillRect(x + 12, y + 4 + bobOffset, 1, 2);
+    // Haar boven (lang blond, dikke krullen)
+    ctx.fillStyle = '#f8d800';
+    ctx.fillRect(x + 3, y - 1 + bobOffset, 10, 3);
+    ctx.fillRect(x + 4, y + 1 + bobOffset, 2, 2);
+    ctx.fillRect(x + 10, y + 1 + bobOffset, 2, 2);
+    // Zijhaar (golvend naar beneden)
+    ctx.fillStyle = '#d8a800';
+    ctx.fillRect(x + 3, y + 0 + bobOffset, 1, 2);
+    ctx.fillRect(x + 12, y + 0 + bobOffset, 1, 2);
 
-    // Eyes
-    ctx.fillStyle = '#4A90D9';
+    // Strik in het haar (rood)
+    ctx.fillStyle = '#f83800';
+    ctx.fillRect(x + 6, y - 1 + bobOffset, 1, 2);
+    ctx.fillRect(x + 9, y - 1 + bobOffset, 1, 2);
+    ctx.fillStyle = '#f87858';
+    ctx.fillRect(x + 7, y - 1 + bobOffset, 2, 1);
+
+    // Ogen (groot, blauw, expressief)
+    ctx.fillStyle = '#0058f8';
     ctx.fillRect(x + 5, y + 3 + bobOffset, 2, 2);
     ctx.fillRect(x + 9, y + 3 + bobOffset, 2, 2);
+    // Pupillen
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x + 6, y + 4 + bobOffset, 1, 1);
+    ctx.fillRect(x + 10, y + 4 + bobOffset, 1, 1);
+    // Oogglans
+    ctx.fillStyle = '#f8f8f8';
+    ctx.fillRect(x + 5, y + 3 + bobOffset, 1, 1);
+    ctx.fillRect(x + 9, y + 3 + bobOffset, 1, 1);
 
-    // Pupils
-    ctx.fillStyle = '#1a1a2e';
-    ctx.fillRect(x + 6, y + 3 + bobOffset, 1, 1);
-    ctx.fillRect(x + 10, y + 3 + bobOffset, 1, 1);
-
-    // Mouth
-    ctx.fillStyle = '#D4896A';
+    // Mond (lachje)
+    ctx.fillStyle = '#f87858';
     ctx.fillRect(x + 7, y + 5 + bobOffset, 2, 1);
 
-    // Freckles
-    ctx.fillStyle = '#C4956A';
-    ctx.fillRect(x + 5, y + 4 + bobOffset, 1, 1);
-    ctx.fillRect(x + 10, y + 4 + bobOffset, 1, 1);
+    // Sproetjes (Eva's kenmerk!)
+    ctx.fillStyle = '#d89858';
+    ctx.fillRect(x + 5, y + 5 + bobOffset, 1, 1);
+    ctx.fillRect(x + 10, y + 5 + bobOffset, 1, 1);
 }
 
 // --- Shop ---

@@ -478,6 +478,202 @@ const ANIMAL_DEFS = [
             { name: 'Verwoestende Charge', power: 44, type: TYPES.VUUR, emoji: '💥' }
         ],
         areas: ['volcano'], rarity: 0.04, catchRate: 0.18
+    },
+    // ===== WOESTIJN FABELDIEREN =====
+    {
+        id: 'scarabee',
+        name: 'Goudscarabee',
+        emoji: '🪲',
+        type: TYPES.MAGISCH,
+        description: 'Een glanzende kever met magische krachten uit de woestijn.',
+        food: 'Woestijnzand & goud 🏜️',
+        baseHp: 38, baseAtk: 14, baseDef: 16, baseSpd: 15,
+        moves: [
+            { name: 'Gouden Schild', power: 0, type: TYPES.MAGISCH, emoji: '🛡️', heal: 18 },
+            { name: 'Zandwervel', power: 22, type: TYPES.NATUUR, emoji: '🌪️' },
+            { name: 'Zonneglans', power: 28, type: TYPES.LICHT, emoji: '☀️' },
+            { name: 'Piramidekracht', power: 38, type: TYPES.MAGISCH, emoji: '🔺' }
+        ],
+        areas: ['desert'], rarity: 0.12, catchRate: 0.38
+    },
+    {
+        id: 'zandworm',
+        name: 'Zandworm',
+        emoji: '🪱',
+        type: TYPES.NATUUR,
+        description: 'Een gigantische worm die door het woestijnzand zwemt!',
+        food: 'Ondergrondse kristallen 💎',
+        baseHp: 62, baseAtk: 20, baseDef: 18, baseSpd: 5,
+        moves: [
+            { name: 'Verslinden', power: 32, type: TYPES.NATUUR, emoji: '😮' },
+            { name: 'Zandgolf', power: 28, type: TYPES.NATUUR, emoji: '🏜️' },
+            { name: 'Aardschok', power: 35, type: TYPES.NATUUR, emoji: '💥' },
+            { name: 'Woestijnval', power: 45, type: TYPES.DUISTER, emoji: '🕳️' }
+        ],
+        areas: ['desert'], rarity: 0.04, catchRate: 0.18
+    },
+    {
+        id: 'fenrir',
+        name: 'Fenrir',
+        emoji: '🐺',
+        type: TYPES.DUISTER,
+        description: 'De legendarische reuzenwolf uit de Noordse mythen.',
+        food: 'Maanlichtvlees 🌙',
+        baseHp: 58, baseAtk: 22, baseDef: 12, baseSpd: 16,
+        moves: [
+            { name: 'Schaduwbeet', power: 30, type: TYPES.DUISTER, emoji: '🐺' },
+            { name: 'IJzige Huil', power: 25, type: TYPES.WATER, emoji: '🌕' },
+            { name: 'Kettingbreuk', power: 35, type: TYPES.DUISTER, emoji: '⛓️' },
+            { name: 'Ragnarok', power: 50, type: TYPES.DUISTER, emoji: '💀' }
+        ],
+        areas: ['desert', 'ice'], rarity: 0.02, catchRate: 0.1
+    },
+    // ===== MOERAS FABELDIEREN =====
+    {
+        id: 'kappa',
+        name: 'Kappa',
+        emoji: '🐢',
+        type: TYPES.WATER,
+        description: 'Een sluw waterwezen met een schotel op zijn hoofd.',
+        food: 'Komkommers 🥒',
+        baseHp: 42, baseAtk: 14, baseDef: 14, baseSpd: 13,
+        moves: [
+            { name: 'Waterstraal', power: 22, type: TYPES.WATER, emoji: '💧' },
+            { name: 'Schildbash', power: 18, type: TYPES.NATUUR, emoji: '🛡️' },
+            { name: 'Moerasval', power: 28, type: TYPES.WATER, emoji: '🏞️' },
+            { name: 'Draaikolk', power: 38, type: TYPES.WATER, emoji: '🌀' }
+        ],
+        areas: ['swamp'], rarity: 0.10, catchRate: 0.35
+    },
+    {
+        id: 'wisp',
+        name: 'Dwaallicht',
+        emoji: '🔮',
+        type: TYPES.MAGISCH,
+        description: 'Een mysterieus lichtje dat reizigers in het moeras verdwaalt.',
+        food: 'Zielenvuur 👻',
+        baseHp: 28, baseAtk: 16, baseDef: 6, baseSpd: 24,
+        moves: [
+            { name: 'Vlam Lokken', power: 20, type: TYPES.MAGISCH, emoji: '🔮' },
+            { name: 'Geestenvlam', power: 28, type: TYPES.VUUR, emoji: '🔥' },
+            { name: 'Verdwalen', power: 25, type: TYPES.MAGISCH, emoji: '🌫️' },
+            { name: 'Zielenvuur', power: 42, type: TYPES.DUISTER, emoji: '👻' }
+        ],
+        areas: ['swamp', 'ruins'], rarity: 0.08, catchRate: 0.30
+    },
+    {
+        id: 'slangenkoning',
+        name: 'Slangenkoning',
+        emoji: '🐍',
+        type: TYPES.DUISTER,
+        description: 'De koning van alle slangen, met giftige kroon.',
+        food: 'Kikkers & ratten 🐸',
+        baseHp: 52, baseAtk: 19, baseDef: 13, baseSpd: 15,
+        moves: [
+            { name: 'Gifbeet', power: 25, type: TYPES.DUISTER, emoji: '🐍' },
+            { name: 'Giftige Kroon', power: 30, type: TYPES.DUISTER, emoji: '👑' },
+            { name: 'Wurgen', power: 22, type: TYPES.NATUUR, emoji: '🐍' },
+            { name: 'Dodelijk Gif', power: 44, type: TYPES.DUISTER, emoji: '☠️' }
+        ],
+        areas: ['swamp'], rarity: 0.05, catchRate: 0.22
+    },
+    // ===== IJSLAND FABELDIEREN =====
+    {
+        id: 'ijsdraak',
+        name: 'IJsdraak',
+        emoji: '🐉',
+        type: TYPES.WATER,
+        description: 'Een majestueuze draak van eeuwig ijs!',
+        food: 'Bevroren kristallen ❄️',
+        baseHp: 56, baseAtk: 19, baseDef: 14, baseSpd: 12,
+        moves: [
+            { name: 'IJsadem', power: 28, type: TYPES.WATER, emoji: '❄️' },
+            { name: 'Bevriezing', power: 32, type: TYPES.WATER, emoji: '🥶' },
+            { name: 'IJsklauw', power: 24, type: TYPES.NATUUR, emoji: '🐉' },
+            { name: 'Blizzard', power: 45, type: TYPES.WATER, emoji: '🌨️' }
+        ],
+        areas: ['ice'], rarity: 0.03, catchRate: 0.15
+    },
+    {
+        id: 'sneeuwuil',
+        name: 'Sneeuwuil',
+        emoji: '🦉',
+        type: TYPES.LICHT,
+        description: 'Een wijze uil met veren van sneeuw en sterren.',
+        food: 'IJsmuizen ❄️',
+        baseHp: 36, baseAtk: 15, baseDef: 10, baseSpd: 20,
+        moves: [
+            { name: 'Vleugelbries', power: 20, type: TYPES.LICHT, emoji: '🪶' },
+            { name: 'Sterrenblik', power: 26, type: TYPES.MAGISCH, emoji: '⭐' },
+            { name: 'IJswind', power: 28, type: TYPES.WATER, emoji: '🌬️' },
+            { name: 'Noorderlicht', power: 40, type: TYPES.LICHT, emoji: '🌌' }
+        ],
+        areas: ['ice'], rarity: 0.08, catchRate: 0.32
+    },
+    {
+        id: 'wendigo',
+        name: 'Wendigo',
+        emoji: '🦌',
+        type: TYPES.DUISTER,
+        description: 'Een angstaanjagend geestwezen uit de bevroren bossen.',
+        food: 'Schaduwvlees 🌑',
+        baseHp: 54, baseAtk: 21, baseDef: 11, baseSpd: 17,
+        moves: [
+            { name: 'Bevroren Klauw', power: 28, type: TYPES.DUISTER, emoji: '🦌' },
+            { name: 'IJsgehuil', power: 25, type: TYPES.WATER, emoji: '🌬️' },
+            { name: 'Zielenschreeuw', power: 32, type: TYPES.DUISTER, emoji: '😱' },
+            { name: 'Eeuwige Kou', power: 46, type: TYPES.DUISTER, emoji: '❄️' }
+        ],
+        areas: ['ice'], rarity: 0.03, catchRate: 0.14
+    },
+    // ===== RUÏNES FABELDIEREN =====
+    {
+        id: 'gargoyle',
+        name: 'Gargoyle',
+        emoji: '🗿',
+        type: TYPES.NATUUR,
+        description: 'Een levend stenen standbeeld dat de ruïnes bewaakt.',
+        food: 'Stenen & mos 🪨',
+        baseHp: 55, baseAtk: 16, baseDef: 22, baseSpd: 6,
+        moves: [
+            { name: 'Steenworp', power: 24, type: TYPES.NATUUR, emoji: '🪨' },
+            { name: 'Vleugelstamp', power: 28, type: TYPES.NATUUR, emoji: '🦇' },
+            { name: 'Verstening', power: 30, type: TYPES.MAGISCH, emoji: '🗿' },
+            { name: 'Stenen Oordeel', power: 42, type: TYPES.NATUUR, emoji: '⚖️' }
+        ],
+        areas: ['ruins'], rarity: 0.08, catchRate: 0.28
+    },
+    {
+        id: 'medusa',
+        name: 'Medusa',
+        emoji: '🐍',
+        type: TYPES.MAGISCH,
+        description: 'De gevreesde vrouw met slangen als haar.',
+        food: 'Versteende muizen 🐭',
+        baseHp: 46, baseAtk: 18, baseDef: 12, baseSpd: 16,
+        moves: [
+            { name: 'Versteende Blik', power: 30, type: TYPES.MAGISCH, emoji: '👁️' },
+            { name: 'Slangenbeet', power: 25, type: TYPES.DUISTER, emoji: '🐍' },
+            { name: 'Gifschuiven', power: 28, type: TYPES.DUISTER, emoji: '☠️' },
+            { name: 'Gorgon Woede', power: 45, type: TYPES.MAGISCH, emoji: '😱' }
+        ],
+        areas: ['ruins'], rarity: 0.04, catchRate: 0.18
+    },
+    {
+        id: 'chimaera',
+        name: 'Chimaera',
+        emoji: '🦁',
+        type: TYPES.VUUR,
+        description: 'Leeuw, geit en slang in één verschrikkelijk beest!',
+        food: 'Alles! 🍖',
+        baseHp: 60, baseAtk: 21, baseDef: 15, baseSpd: 11,
+        moves: [
+            { name: 'Leeuwenbrul', power: 26, type: TYPES.NATUUR, emoji: '🦁' },
+            { name: 'Vuurspuwen', power: 30, type: TYPES.VUUR, emoji: '🔥' },
+            { name: 'Slangengif', power: 25, type: TYPES.DUISTER, emoji: '🐍' },
+            { name: 'Drievoudige Furie', power: 48, type: TYPES.VUUR, emoji: '💥' }
+        ],
+        areas: ['ruins', 'desert'], rarity: 0.03, catchRate: 0.12
     }
 ];
 
@@ -1469,6 +1665,368 @@ function drawAnimalSprite(canvasId, animalId, flipped) {
             r(13, 5, 2, 1, '#8D6E63');
             r(14, 3, 2, 2, '#F44336');
             r(15, 3, 1, 1, '#B71C1C');
+            break;
+
+        case 'scarabee':
+            // Body
+            r(4, 5, 8, 7, '#FFD700');
+            r(5, 6, 6, 5, '#FFC107');
+            // Head
+            r(5, 3, 6, 3, '#4E342E');
+            // Eyes
+            r(6, 4, 2, 1, '#FF5722');
+            r(9, 4, 2, 1, '#FF5722');
+            // Mandibles
+            r(5, 6, 1, 1, '#4E342E');
+            r(10, 6, 1, 1, '#4E342E');
+            // Wing cases
+            r(4, 6, 4, 5, '#FFD700');
+            r(8, 6, 4, 5, '#FFD700');
+            ctx.fillStyle = '#FFA000';
+            ctx.fillRect(8 * P, 6 * P, P / 2, 5 * P);
+            // Legs
+            r(3, 7, 1, 1, '#4E342E');
+            r(3, 9, 1, 1, '#4E342E');
+            r(12, 7, 1, 1, '#4E342E');
+            r(12, 9, 1, 1, '#4E342E');
+            r(4, 11, 2, 2, '#4E342E');
+            r(10, 11, 2, 2, '#4E342E');
+            // Glow
+            r(6, 7, 4, 3, '#FFEB3B');
+            break;
+
+        case 'zandworm':
+            // Body segments curving up
+            r(2, 12, 4, 3, '#D4760A');
+            r(4, 10, 4, 3, '#E8A04A');
+            r(6, 8, 4, 3, '#D4760A');
+            r(8, 6, 4, 3, '#E8A04A');
+            r(10, 4, 4, 3, '#D4760A');
+            // Head
+            r(10, 1, 5, 4, '#D4760A');
+            r(11, 2, 3, 2, '#E8A04A');
+            // Mouth open
+            r(14, 2, 2, 2, '#8D0000');
+            r(14, 1, 1, 1, '#F5F5F5');
+            r(14, 4, 1, 1, '#F5F5F5');
+            // Eye
+            r(11, 2, 1, 1, '#FF5722');
+            // Belly segments
+            r(3, 13, 2, 1, '#E8A04A');
+            r(5, 11, 2, 1, '#E8A04A');
+            r(7, 9, 2, 1, '#E8A04A');
+            r(9, 7, 2, 1, '#E8A04A');
+            // Sand particles
+            r(1, 14, 2, 1, '#F8D878');
+            r(5, 14, 1, 1, '#F8D878');
+            r(14, 6, 1, 1, '#F8D878');
+            break;
+
+        case 'fenrir':
+            // Body
+            r(3, 7, 10, 5, '#4A4A5A');
+            r(4, 8, 8, 3, '#5C5C6E');
+            // Head
+            r(1, 4, 6, 4, '#4A4A5A');
+            r(2, 5, 4, 2, '#5C5C6E');
+            // Ears
+            r(2, 2, 2, 3, '#4A4A5A');
+            r(5, 2, 2, 3, '#4A4A5A');
+            r(3, 3, 1, 1, '#5C5C6E');
+            r(6, 3, 1, 1, '#5C5C6E');
+            // Eyes (glowing red)
+            r(2, 5, 2, 2, '#F44336');
+            r(3, 5, 1, 1, '#FFCDD2');
+            // Mouth
+            r(1, 7, 3, 1, '#1a1a2e');
+            r(1, 7, 1, 1, '#F5F5F5');
+            // Legs
+            r(4, 12, 2, 4, '#4A4A5A');
+            r(10, 12, 2, 4, '#4A4A5A');
+            r(4, 15, 2, 1, '#1a1a2e');
+            r(10, 15, 2, 1, '#1a1a2e');
+            // Tail
+            r(13, 8, 2, 1, '#4A4A5A');
+            r(14, 7, 2, 1, '#5C5C6E');
+            // Chains broken
+            r(3, 12, 1, 1, '#bcbcbc');
+            r(11, 12, 1, 1, '#bcbcbc');
+            break;
+
+        case 'kappa':
+            // Shell
+            r(4, 6, 8, 6, '#2E7D32');
+            r(5, 7, 6, 4, '#388E3C');
+            // Shell pattern
+            r(6, 8, 2, 2, '#1B5E20');
+            r(9, 8, 2, 2, '#1B5E20');
+            // Head
+            r(5, 2, 6, 5, '#66BB6A');
+            // Head dish (water)
+            r(6, 1, 4, 2, '#0058f8');
+            r(7, 1, 2, 1, '#58d8f8');
+            // Eyes
+            r(6, 4, 2, 1, '#1a1a2e');
+            r(9, 4, 2, 1, '#1a1a2e');
+            // Beak
+            r(7, 5, 2, 1, '#FFD700');
+            // Arms
+            r(3, 7, 1, 3, '#66BB6A');
+            r(12, 7, 1, 3, '#66BB6A');
+            // Legs
+            r(5, 12, 2, 3, '#66BB6A');
+            r(9, 12, 2, 3, '#66BB6A');
+            r(5, 14, 3, 1, '#388E3C');
+            r(8, 14, 3, 1, '#388E3C');
+            break;
+
+        case 'wisp':
+            // Outer glow
+            r(4, 3, 8, 8, 'rgba(100,200,255,0.3)');
+            // Core flame
+            r(6, 4, 4, 6, '#64B5F6');
+            r(7, 3, 2, 7, '#90CAF9');
+            // Bright center
+            r(7, 5, 2, 3, '#E3F2FD');
+            r(8, 4, 1, 1, '#F5F5F5');
+            // Eyes
+            r(6, 6, 1, 1, '#1a1a2e');
+            r(9, 6, 1, 1, '#1a1a2e');
+            // Flame wisps
+            r(5, 10, 1, 2, '#42A5F5');
+            r(10, 10, 1, 2, '#42A5F5');
+            r(7, 11, 2, 2, '#64B5F6');
+            // Sparkles
+            r(3, 2, 1, 1, '#E3F2FD');
+            r(12, 4, 1, 1, '#E3F2FD');
+            r(4, 9, 1, 1, '#E3F2FD');
+            r(11, 7, 1, 1, '#E3F2FD');
+            break;
+
+        case 'slangenkoning':
+            // Body coils
+            r(3, 10, 10, 3, '#2E7D32');
+            r(2, 8, 4, 3, '#388E3C');
+            r(10, 8, 4, 3, '#2E7D32');
+            // Upright body
+            r(6, 3, 4, 7, '#2E7D32');
+            r(7, 4, 2, 5, '#66BB6A');
+            // Head
+            r(5, 1, 6, 3, '#2E7D32');
+            r(6, 2, 4, 1, '#388E3C');
+            // Crown
+            r(5, 0, 1, 2, '#FFD700');
+            r(7, 0, 1, 1, '#FFD700');
+            r(10, 0, 1, 2, '#FFD700');
+            r(6, 0, 1, 1, '#FFA000');
+            r(8, 0, 3, 1, '#FFA000');
+            // Eyes
+            r(6, 2, 1, 1, '#F44336');
+            r(9, 2, 1, 1, '#F44336');
+            // Fangs
+            r(7, 4, 1, 1, '#F5F5F5');
+            r(9, 4, 1, 1, '#F5F5F5');
+            // Tongue
+            r(8, 4, 1, 2, '#F44336');
+            // Belly scales
+            r(7, 5, 2, 4, '#A5D6A7');
+            // Tail
+            r(13, 11, 2, 1, '#2E7D32');
+            r(14, 10, 1, 1, '#388E3C');
+            break;
+
+        case 'ijsdraak':
+            // Head
+            r(4, 1, 6, 5, '#90CAF9');
+            r(3, 2, 1, 2, '#90CAF9');
+            // Horns (ice)
+            r(4, 0, 2, 2, '#E3F2FD');
+            r(9, 0, 2, 2, '#E3F2FD');
+            // Eyes
+            r(6, 2, 2, 2, '#0058f8');
+            r(7, 2, 1, 1, '#E3F2FD');
+            // Mouth - ice breath
+            r(3, 4, 2, 1, '#58d8f8');
+            r(1, 3, 2, 1, '#E3F2FD');
+            // Body
+            r(3, 6, 10, 4, '#90CAF9');
+            r(4, 7, 8, 2, '#B3E5FC');
+            // Belly
+            r(5, 8, 5, 2, '#E3F2FD');
+            // Wings
+            r(1, 4, 3, 5, '#64B5F6');
+            r(0, 5, 1, 3, '#42A5F5');
+            r(12, 4, 3, 5, '#64B5F6');
+            r(15, 5, 1, 3, '#42A5F5');
+            // Legs
+            r(4, 10, 3, 4, '#64B5F6');
+            r(9, 10, 3, 4, '#64B5F6');
+            // Claws
+            r(4, 13, 1, 1, '#E3F2FD');
+            r(6, 13, 1, 1, '#E3F2FD');
+            r(9, 13, 1, 1, '#E3F2FD');
+            r(11, 13, 1, 1, '#E3F2FD');
+            // Ice crystals
+            r(13, 9, 2, 1, '#E3F2FD');
+            r(14, 10, 2, 1, '#B3E5FC');
+            break;
+
+        case 'sneeuwuil':
+            // Body
+            r(4, 6, 8, 7, '#F5F5F5');
+            r(5, 7, 6, 5, '#EEEEEE');
+            // Head
+            r(4, 2, 8, 5, '#F5F5F5');
+            // Ear tufts
+            r(4, 1, 2, 2, '#E0E0E0');
+            r(10, 1, 2, 2, '#E0E0E0');
+            // Eyes (big owl eyes)
+            r(5, 3, 3, 3, '#FFD700');
+            r(6, 4, 1, 1, '#1a1a2e');
+            r(9, 3, 3, 3, '#FFD700');
+            r(10, 4, 1, 1, '#1a1a2e');
+            // Beak
+            r(7, 5, 2, 2, '#FF8F00');
+            // Wing pattern
+            r(3, 7, 2, 5, '#E0E0E0');
+            r(11, 7, 2, 5, '#E0E0E0');
+            // Speckles
+            r(5, 8, 1, 1, '#BDBDBD');
+            r(7, 9, 1, 1, '#BDBDBD');
+            r(10, 8, 1, 1, '#BDBDBD');
+            r(6, 11, 1, 1, '#BDBDBD');
+            r(9, 10, 1, 1, '#BDBDBD');
+            // Feet
+            r(5, 13, 2, 1, '#FF8F00');
+            r(9, 13, 2, 1, '#FF8F00');
+            // Stars around
+            r(2, 2, 1, 1, '#FFD700');
+            r(13, 3, 1, 1, '#FFD700');
+            r(1, 8, 1, 1, '#FFD700');
+            break;
+
+        case 'wendigo':
+            // Antlers
+            r(3, 0, 2, 3, '#795548');
+            r(1, 0, 2, 2, '#795548');
+            r(11, 0, 2, 3, '#795548');
+            r(13, 0, 2, 2, '#795548');
+            // Skull head
+            r(5, 2, 6, 4, '#E0E0E0');
+            r(6, 3, 4, 2, '#F5F5F5');
+            // Dark eyes
+            r(6, 3, 2, 2, '#1a1a2e');
+            r(9, 3, 2, 2, '#1a1a2e');
+            r(7, 3, 1, 1, '#F44336');
+            r(10, 3, 1, 1, '#F44336');
+            // Body (thin, gaunt)
+            r(6, 6, 4, 6, '#5C5C6E');
+            r(7, 7, 2, 4, '#4A4A5A');
+            // Arms (long, thin)
+            r(4, 7, 2, 5, '#5C5C6E');
+            r(10, 7, 2, 5, '#5C5C6E');
+            r(3, 11, 1, 1, '#E0E0E0');
+            r(12, 11, 1, 1, '#E0E0E0');
+            // Legs
+            r(6, 12, 2, 4, '#5C5C6E');
+            r(9, 12, 2, 4, '#5C5C6E');
+            // Ice particles
+            r(2, 5, 1, 1, '#B3E5FC');
+            r(13, 6, 1, 1, '#B3E5FC');
+            r(5, 14, 1, 1, '#B3E5FC');
+            break;
+
+        case 'gargoyle':
+            // Body (stone)
+            r(4, 6, 8, 6, '#757575');
+            r(5, 7, 6, 4, '#9E9E9E');
+            // Head
+            r(5, 2, 6, 5, '#757575');
+            r(6, 3, 4, 3, '#9E9E9E');
+            // Horns
+            r(4, 1, 2, 2, '#616161');
+            r(10, 1, 2, 2, '#616161');
+            // Eyes (glowing)
+            r(6, 4, 2, 1, '#FFD700');
+            r(9, 4, 2, 1, '#FFD700');
+            // Mouth
+            r(7, 6, 2, 1, '#424242');
+            // Wings (stone)
+            r(1, 5, 3, 5, '#616161');
+            r(0, 6, 1, 3, '#757575');
+            r(12, 5, 3, 5, '#616161');
+            r(15, 6, 1, 3, '#757575');
+            // Legs
+            r(5, 12, 2, 3, '#616161');
+            r(9, 12, 2, 3, '#616161');
+            r(5, 14, 3, 1, '#424242');
+            r(9, 14, 3, 1, '#424242');
+            // Stone cracks
+            r(6, 8, 1, 2, '#424242');
+            r(10, 7, 1, 1, '#424242');
+            break;
+
+        case 'medusa':
+            // Snake hair
+            r(3, 0, 2, 4, '#2E7D32');
+            r(5, 0, 1, 3, '#388E3C');
+            r(7, 0, 2, 2, '#2E7D32');
+            r(10, 0, 1, 3, '#388E3C');
+            r(11, 0, 2, 4, '#2E7D32');
+            r(2, 2, 1, 2, '#66BB6A');
+            r(13, 2, 1, 2, '#66BB6A');
+            // Head
+            r(4, 3, 8, 5, '#C8E6C9');
+            r(5, 4, 6, 3, '#A5D6A7');
+            // Eyes (piercing)
+            r(5, 4, 2, 2, '#F44336');
+            r(6, 4, 1, 1, '#FFCDD2');
+            r(9, 4, 2, 2, '#F44336');
+            r(10, 4, 1, 1, '#FFCDD2');
+            // Mouth
+            r(7, 7, 2, 1, '#F44336');
+            // Body (robe)
+            r(4, 8, 8, 5, '#6A1B9A');
+            r(5, 9, 6, 3, '#8E24AA');
+            // Snake lower body
+            r(4, 13, 8, 2, '#2E7D32');
+            r(3, 14, 2, 1, '#388E3C');
+            r(11, 14, 2, 1, '#388E3C');
+            break;
+
+        case 'chimaera':
+            // Lion head (front)
+            r(2, 2, 5, 4, '#FF8F00');
+            r(3, 3, 3, 2, '#FFCC80');
+            r(1, 1, 2, 4, '#E65100');
+            r(6, 1, 2, 4, '#E65100');
+            // Lion eyes
+            r(3, 3, 1, 1, '#1a1a2e');
+            r(5, 3, 1, 1, '#1a1a2e');
+            // Mouth - fire
+            r(3, 5, 3, 1, '#F44336');
+            r(2, 5, 1, 1, '#FF5722');
+            // Body
+            r(4, 6, 8, 5, '#D4760A');
+            r(5, 7, 6, 3, '#E8A04A');
+            // Goat head (back)
+            r(10, 3, 4, 3, '#BDBDBD');
+            r(11, 2, 1, 2, '#795548');
+            r(13, 2, 1, 2, '#795548');
+            r(11, 4, 2, 1, '#9E9E9E');
+            // Wings
+            r(1, 5, 3, 4, '#5D4037');
+            r(0, 6, 1, 2, '#795548');
+            // Legs
+            r(5, 11, 2, 4, '#D4760A');
+            r(9, 11, 2, 4, '#D4760A');
+            r(5, 14, 2, 1, '#5D4037');
+            r(9, 14, 2, 1, '#5D4037');
+            // Snake tail
+            r(12, 8, 2, 1, '#2E7D32');
+            r(13, 7, 2, 1, '#388E3C');
+            r(14, 6, 2, 1, '#2E7D32');
+            r(15, 6, 1, 1, '#F44336');
             break;
 
         default:

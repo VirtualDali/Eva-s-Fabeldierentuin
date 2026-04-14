@@ -32,35 +32,30 @@ function renderBattle() {
     const playerDef = getAnimalDef(battleState.player.id);
     const enemyDef = getAnimalDef(battleState.enemy.id);
 
-    // Set background based on current map
-    const map = MAPS[gamePlayer.currentMap];
+    // DQ2 NES style: pure black battle background
     const bgEl = document.getElementById('battle-bg');
-    if (map && map.bgColor) {
-        const sky = map.music === 'cave' ? '#1a1a2e' : map.music === 'volcano' ? '#4A2020' : '#87CEEB';
-        bgEl.style.background = `linear-gradient(180deg, ${sky} 0%, ${sky} 50%, ${map.bgColor} 50%, ${map.bgColor} 100%)`;
-    }
+    bgEl.style.background = '#000';
 
-    // Enemy
+    // Enemy - centered, large (DQ first-person view)
     drawAnimalSprite('battle-enemy-sprite', enemyDef.id, false);
     updateBattleInfo('enemy');
-
-    // Player
-    drawAnimalSprite('battle-player-sprite', playerDef.id, true);
     updateBattleInfo('player');
 }
 
 function updateBattleInfo(who) {
     const animal = who === 'player' ? battleState.player : battleState.enemy;
     const def = getAnimalDef(animal.id);
-    const el = document.getElementById(who === 'player' ? 'battle-player-info' : 'battle-enemy-info');
+    const el = document.getElementById(who === 'player' ? 'battle-player-status' : 'battle-enemy-status');
     const hpPercent = Math.max(0, Math.round((animal.hp / animal.maxHp) * 100));
     const hpClass = hpPercent > 50 ? '' : hpPercent > 20 ? ' low' : ' critical';
 
     el.innerHTML = `
-        <div>${def.emoji} ${animal.nickname} <span style="opacity:0.6">Lvl ${animal.level}</span></div>
-        <div style="font-size:0.75rem;color:${getTypeColor(def.type)}">${getTypeEmoji(def.type)} ${def.type}</div>
-        <div class="hp-bar"><div class="hp-bar-fill${hpClass}" style="width:${hpPercent}%"></div></div>
-        <div style="font-size:0.75rem;opacity:0.7">${animal.hp}/${animal.maxHp} HP</div>
+        <div class="dq-status-name">${def.emoji} ${animal.nickname} Lv${animal.level}</div>
+        <div class="dq-status-hp">
+            <span class="dq-status-hp-label">HP</span>
+            <div class="hp-bar" style="flex:1"><div class="hp-bar-fill${hpClass}" style="width:${hpPercent}%"></div></div>
+            <span>${animal.hp}/${animal.maxHp}</span>
+        </div>
     `;
 }
 

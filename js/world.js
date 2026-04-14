@@ -31,38 +31,55 @@ const TILE = {
     PLANT_POT: 24,
     WINDOW_TILE: 25,
     STOVE: 26,
-    FOOD_CHEST: 27
+    FOOD_CHEST: 27,
+    FOUNTAIN: 28,
+    CASTLE: 29,
+    CASTLE_DOOR: 30,
+    ICE: 31,
+    SNOW: 32,
+    SWAMP: 33,
+    RUINS_FLOOR: 34,
+    RUINS_WALL: 35
 };
 
+// DQ2 NES palette colors
 const TILE_COLORS = {
-    [TILE.GRASS]:       '#5a9e3e',
-    [TILE.WALL]:        '#6B4226',
-    [TILE.TALLGRASS]:   '#3d7a28',
-    [TILE.WATER]:       '#2196F3',
-    [TILE.PATH]:        '#C8B07A',
-    [TILE.DOOR]:        '#8B4513',
-    [TILE.HOUSE]:       '#D4760A',
-    [TILE.TREE]:        '#2E7D32',
-    [TILE.ROCK]:        '#78909C',
-    [TILE.LAVA]:        '#E65100',
-    [TILE.CAVE_FLOOR]:  '#4A4A5A',
-    [TILE.CAVE_WALL]:   '#2C2C3A',
-    [TILE.SAND]:        '#E8D5A3',
-    [TILE.SIGN]:        '#C8B07A',
-    [TILE.NPC]:         '#C8B07A',
-    [TILE.EXIT]:        '#FFD700',
-    [TILE.HOUSE_INSIDE]:'#D2B48C',
-    [TILE.HEAL]:        '#FF69B4',
-    [TILE.SHOP]:        '#9C27B0',
-    [TILE.BED]:         '#D2B48C',
-    [TILE.TABLE]:       '#D2B48C',
-    [TILE.BOOKSHELF]:   '#D2B48C',
-    [TILE.CHEST]:       '#D2B48C',
-    [TILE.RUG]:         '#C4626A',
-    [TILE.PLANT_POT]:   '#D2B48C',
-    [TILE.WINDOW_TILE]: '#D2B48C',
-    [TILE.STOVE]:       '#D2B48C',
-    [TILE.FOOD_CHEST]:  '#D2B48C'
+    [TILE.GRASS]:       '#00a800',
+    [TILE.WALL]:        '#824100',
+    [TILE.TALLGRASS]:   '#005800',
+    [TILE.WATER]:       '#0058f8',
+    [TILE.PATH]:        '#fcbcb0',
+    [TILE.DOOR]:        '#824100',
+    [TILE.HOUSE]:       '#f87858',
+    [TILE.TREE]:        '#005800',
+    [TILE.ROCK]:        '#bcbcbc',
+    [TILE.LAVA]:        '#f83800',
+    [TILE.CAVE_FLOOR]:  '#747474',
+    [TILE.CAVE_WALL]:   '#3c3c3c',
+    [TILE.SAND]:        '#f8d878',
+    [TILE.SIGN]:        '#fcbcb0',
+    [TILE.NPC]:         '#fcbcb0',
+    [TILE.EXIT]:        '#f8d800',
+    [TILE.HOUSE_INSIDE]:'#f8d878',
+    [TILE.HEAL]:        '#f878f8',
+    [TILE.SHOP]:        '#6844fc',
+    [TILE.BED]:         '#f8d878',
+    [TILE.TABLE]:       '#f8d878',
+    [TILE.BOOKSHELF]:   '#f8d878',
+    [TILE.CHEST]:       '#f8d878',
+    [TILE.RUG]:         '#a80020',
+    [TILE.PLANT_POT]:   '#f8d878',
+    [TILE.WINDOW_TILE]: '#f8d878',
+    [TILE.STOVE]:       '#f8d878',
+    [TILE.FOOD_CHEST]:  '#f8d878',
+    [TILE.FOUNTAIN]:    '#0058f8',
+    [TILE.CASTLE]:      '#bcbcbc',
+    [TILE.CASTLE_DOOR]: '#bcbcbc',
+    [TILE.ICE]:         '#a8d8f8',
+    [TILE.SNOW]:        '#f0f0f8',
+    [TILE.SWAMP]:       '#3a5828',
+    [TILE.RUINS_FLOOR]: '#a89880',
+    [TILE.RUINS_WALL]:  '#686058'
 };
 
 const TILE_EMOJIS = {
@@ -81,7 +98,7 @@ const TILE_WALKABLE = new Set([
     TILE.GRASS, TILE.TALLGRASS, TILE.PATH, TILE.DOOR,
     TILE.SAND, TILE.CAVE_FLOOR, TILE.EXIT,
     TILE.HOUSE_INSIDE, TILE.SIGN, TILE.NPC, TILE.HEAL, TILE.SHOP,
-    TILE.RUG
+    TILE.RUG, TILE.CASTLE_DOOR, TILE.SNOW, TILE.RUINS_FLOOR
 ]);
 
 const TILE_SIZE = 16;
@@ -101,44 +118,51 @@ const MAPS = {
         encounters: false,
         tiles: [
             [7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],
-            [7,4,4,4,4,4,0,0,0,7,0,0,0,0,0,7,0,0,4,4,4,4,4,4,7],
-            [7,4,6,6,6,4,0,0,0,0,0,0,0,0,0,0,0,0,4,6,6,6,4,4,7],
-            [7,4,6,16,6,4,0,0,0,0,0,0,13,0,0,0,0,0,4,6,16,6,4,4,7],
-            [7,4,6,5,6,4,0,0,0,0,0,0,0,0,0,0,0,0,4,6,5,6,4,4,7],
-            [7,4,4,4,4,4,0,0,0,0,4,4,4,4,4,0,0,0,4,4,4,4,4,4,7],
-            [7,0,0,0,0,0,0,0,0,4,4,17,4,18,4,4,0,0,0,0,0,0,0,0,7],
-            [7,0,0,0,0,0,0,0,4,4,0,0,0,0,0,4,4,0,0,0,0,0,0,0,7],
-            [7,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4,7],
-            [7,0,0,0,0,0,0,0,4,0,0,0,14,0,0,0,4,0,0,0,0,0,0,0,7],
-            [7,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,7],
-            [7,0,0,13,0,0,0,0,4,4,0,0,0,0,4,4,4,0,0,0,0,13,0,0,7],
-            [7,0,0,0,0,0,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,7],
-            [7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7],
-            [7,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,7],
-            [7,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,7],
+            [7,0,0,4,4,4,4,4,29,29,29,29,29,29,29,29,29,4,4,4,4,4,0,0,7],
+            [7,0,0,4,6,6,6,4,29,29,29,29,29,29,29,29,29,4,6,6,6,4,0,0,7],
+            [7,0,0,4,6,16,6,4,29,29,29,29,29,29,29,29,29,4,6,16,6,4,0,0,7],
+            [7,0,0,4,6,5,6,4,29,29,29,30,4,30,29,29,29,4,6,5,6,4,0,0,7],
+            [7,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7],
+            [7,0,0,0,0,0,4,0,0,0,0,0,4,0,0,0,0,0,4,0,0,0,0,0,7],
+            [7,6,6,6,4,0,4,0,0,0,0,28,4,28,0,0,0,0,4,0,4,6,6,6,7],
+            [7,6,16,6,4,0,4,0,0,0,28,3,4,3,28,0,0,0,4,0,4,6,16,6,7],
+            [7,6,5,6,4,0,4,4,4,4,4,4,17,4,4,4,4,4,4,0,4,6,5,6,7],
+            [7,4,4,4,4,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,4,4,4,4,7],
+            [7,0,0,13,0,0,0,0,0,0,4,4,18,4,4,0,0,0,0,0,0,13,0,0,7],
+            [7,0,0,0,0,0,0,0,0,4,0,0,14,0,0,4,0,0,0,0,0,0,0,0,7],
+            [7,0,0,0,0,0,13,0,0,4,0,0,0,0,0,4,0,0,13,0,0,0,0,0,7],
+            [7,15,0,0,0,0,0,0,0,4,4,4,4,4,4,4,0,0,0,0,0,0,15,0,7],
+            [7,15,0,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,0,0,15,7],
             [7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]
         ],
         exits: [
             { x: 1, y: 14, target: 'jungle', spawnX: 23, spawnY: 8 },
             { x: 1, y: 15, target: 'jungle', spawnX: 23, spawnY: 9 },
             { x: 22, y: 14, target: 'cave', spawnX: 1, spawnY: 8 },
-            { x: 23, y: 15, target: 'volcano', spawnX: 1, spawnY: 8 }
+            { x: 23, y: 15, target: 'volcano', spawnX: 1, spawnY: 8 },
+            { x: 3, y: 15, target: 'desert', spawnX: 12, spawnY: 1 },
+            { x: 4, y: 15, target: 'desert', spawnX: 12, spawnY: 1 },
+            { x: 19, y: 15, target: 'swamp', spawnX: 12, spawnY: 1 },
+            { x: 20, y: 15, target: 'swamp', spawnX: 12, spawnY: 1 }
         ],
         signs: [
-            { x: 12, y: 3, text: 'Welkom in het Dorpje! Hier begint je avontuur! 🏘️' },
             { x: 3, y: 11, text: '← Jungle: Hier leven wilde fabeldieren! 🌿' },
-            { x: 21, y: 11, text: '→ Grot & Vulkaan: Pas op, sterke dieren! ⚠️' }
+            { x: 21, y: 11, text: '→ Grot & Vulkaan: Pas op, sterke dieren! ⚠️' },
+            { x: 6, y: 13, text: '↓ Woestijn & IJsland: Exotische gebieden! 🏜️❄️' },
+            { x: 18, y: 13, text: '↓ Moeras & Ruïnes: Duistere oorden! 🐸🏛️' }
         ],
         npcs: [
-            { x: 12, y: 9, name: 'Professor Willow', emoji: '👨‍🔬',
+            { x: 12, y: 12, name: 'Professor Willow', emoji: '👨‍🔬',
               dialog: ['Hallo Eva! Welkom in de wereld van de fabeldieren!',
                        'Loop door het hoge gras om wilde fabeldieren tegen te komen.',
                        'Gebruik Fabelballen om ze te vangen! Veel succes! 🌟'],
               battle: false }
         ],
         houses: [
-            { doorX: 3, doorY: 4, inside: 'house_eva' },
-            { doorX: 20, doorY: 4, inside: 'house_trainer' }
+            { doorX: 5, doorY: 4, inside: 'house_eva' },
+            { doorX: 20, doorY: 4, inside: 'house_trainer' },
+            { doorX: 2, doorY: 9, inside: 'house_eva' },
+            { doorX: 23, doorY: 9, inside: 'house_trainer' }
         ]
     },
 
@@ -351,6 +375,211 @@ const MAPS = {
               team: [
                 { id: 'eenhoorn', level: 4 },
                 { id: 'mogwai', level: 5 }
+              ]
+            }
+        ],
+        houses: []
+    },
+
+    desert: {
+        name: 'Woestijn',
+        emoji: '🏜️',
+        bgColor: '#c4a050',
+        music: 'volcano',
+        encounters: true,
+        encounterRate: 0.16,
+        availableAnimals: ['scarabee', 'zandworm', 'fenrir', 'chimaera', 'djinn', 'sfinks', 'salamander', 'mantikoor'],
+        tiles: [
+            [8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],
+            [8,12,12,12,12,12,12,12,12,12,12,15,12,15,12,12,12,12,12,12,12,12,12,12,8],
+            [8,12,12,12,2,2,12,12,12,8,12,12,12,12,12,8,12,12,12,2,2,12,12,12,8],
+            [8,12,12,2,2,2,2,12,12,12,12,12,12,12,12,12,12,12,2,2,2,2,12,12,8],
+            [8,12,12,2,2,12,12,12,12,12,2,2,2,2,2,12,12,12,12,12,2,2,12,12,8],
+            [8,12,12,12,12,12,12,12,12,2,2,2,8,2,2,2,12,12,12,12,12,12,12,12,8],
+            [8,12,12,12,12,12,12,2,2,2,2,12,12,12,2,2,2,2,12,12,12,12,12,12,8],
+            [8,12,8,12,12,12,2,2,2,12,12,12,12,12,12,12,2,2,2,12,12,12,8,12,8],
+            [8,12,12,12,12,2,2,12,12,12,12,12,14,12,12,12,12,12,2,2,12,12,12,12,8],
+            [8,12,8,12,12,12,2,2,2,12,12,12,12,12,12,12,2,2,2,12,12,12,8,12,8],
+            [8,12,12,12,12,12,12,2,2,2,2,12,12,12,2,2,2,2,12,12,12,12,12,12,8],
+            [8,12,12,12,12,12,12,12,12,2,2,2,12,2,2,2,12,12,12,12,12,12,12,12,8],
+            [8,12,12,2,2,12,12,12,12,12,2,2,2,2,2,12,12,12,12,12,2,2,12,12,8],
+            [8,12,12,2,2,2,2,12,12,12,12,12,12,12,12,12,12,12,2,2,2,2,12,12,8],
+            [8,12,12,12,2,2,12,12,12,13,12,12,12,12,12,13,12,12,12,2,2,12,12,12,8],
+            [8,12,12,12,12,12,12,12,12,12,12,12,15,12,12,12,12,12,12,12,12,12,12,12,8],
+            [8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]
+        ],
+        exits: [
+            { x: 11, y: 1, target: 'village', spawnX: 3, spawnY: 14 },
+            { x: 13, y: 1, target: 'village', spawnX: 4, spawnY: 14 },
+            { x: 12, y: 15, target: 'ice', spawnX: 12, spawnY: 1 }
+        ],
+        signs: [
+            { x: 9, y: 14, text: '🏜️ Woestijn — Magische wezens schuilen in het zand!' },
+            { x: 15, y: 14, text: '↓ IJsland: Bevroren wereld hieronder! ❄️' }
+        ],
+        npcs: [
+            { x: 12, y: 8, name: 'Woestijnreiziger Amira', emoji: '🧕',
+              dialog: ['Welkom in de woestijn! Pas op voor zandwormen!',
+                       'De magische scarabeeën zijn moeilijk te vinden, maar de moeite waard!'],
+              battle: true,
+              team: [
+                { id: 'scarabee', level: 7 },
+                { id: 'djinn', level: 8 },
+                { id: 'sfinks', level: 9 }
+              ]
+            }
+        ],
+        houses: []
+    },
+
+    ice: {
+        name: 'IJsland',
+        emoji: '❄️',
+        bgColor: '#a0c8e8',
+        music: 'cave',
+        encounters: true,
+        encounterRate: 0.17,
+        availableAnimals: ['ijsdraak', 'sneeuwuil', 'wendigo', 'fenrir', 'yeti', 'pegasus', 'nymf'],
+        tiles: [
+            [8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],
+            [8,32,32,32,32,32,32,32,32,32,32,15,32,15,32,32,32,32,32,32,32,32,32,32,8],
+            [8,32,32,32,2,2,32,31,31,32,32,32,32,32,32,31,31,32,32,2,2,32,32,32,8],
+            [8,32,32,2,2,2,31,31,32,32,32,32,32,32,32,32,31,31,2,2,2,32,32,32,8],
+            [8,32,32,2,2,32,31,32,32,32,2,2,2,2,2,32,32,31,32,32,2,2,32,32,8],
+            [8,32,32,32,32,32,32,32,32,2,2,2,31,2,2,2,32,32,32,32,32,32,32,32,8],
+            [8,32,31,32,32,32,32,2,2,2,2,31,31,31,2,2,2,2,32,32,32,31,32,32,8],
+            [8,32,31,31,32,32,2,2,2,32,32,31,31,31,32,32,2,2,2,32,31,31,32,32,8],
+            [8,32,32,32,32,2,2,32,32,32,32,32,14,32,32,32,32,32,2,2,32,32,32,32,8],
+            [8,32,31,31,32,32,2,2,2,32,32,32,32,32,32,32,2,2,2,32,31,31,32,32,8],
+            [8,32,31,32,32,32,32,2,2,2,2,32,32,32,2,2,2,2,32,32,32,31,32,32,8],
+            [8,32,32,32,32,32,32,32,32,2,2,2,32,2,2,2,32,32,32,32,32,32,32,32,8],
+            [8,32,32,2,2,32,32,32,32,32,2,2,2,2,2,32,32,32,32,32,2,2,32,32,8],
+            [8,32,32,2,2,2,32,32,32,32,32,32,32,32,32,32,32,32,2,2,2,32,32,32,8],
+            [8,32,32,32,2,2,32,32,13,32,32,32,32,32,32,32,13,32,32,2,2,32,32,32,8],
+            [8,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,8],
+            [8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]
+        ],
+        exits: [
+            { x: 11, y: 1, target: 'desert', spawnX: 12, spawnY: 14 },
+            { x: 13, y: 1, target: 'desert', spawnX: 12, spawnY: 14 }
+        ],
+        signs: [
+            { x: 8, y: 14, text: '❄️ IJsland — De bevroren wereld. Zeldzame wezens wonen hier!' },
+            { x: 16, y: 14, text: '↑ Woestijn: Warm je op in het zand! 🏜️' }
+        ],
+        npcs: [
+            { x: 12, y: 8, name: 'IJskoningin Freya', emoji: '👸',
+              dialog: ['Welkom in mijn bevroren koninkrijk...',
+                       'Alleen de sterkste trainers overleven de kou!',
+                       'Durf je het tegen mijn IJsdraak op te nemen?'],
+              battle: true,
+              team: [
+                { id: 'ijsdraak', level: 10 },
+                { id: 'sneeuwuil', level: 9 },
+                { id: 'wendigo', level: 11 }
+              ]
+            }
+        ],
+        houses: []
+    },
+
+    swamp: {
+        name: 'Moeras',
+        emoji: '🐸',
+        bgColor: '#2a3a20',
+        music: 'cave',
+        encounters: true,
+        encounterRate: 0.20,
+        availableAnimals: ['kappa', 'wisp', 'slangenkoning', 'nymf', 'trol', 'werwolf', 'gremlin', 'hydra'],
+        tiles: [
+            [7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],
+            [7,33,33,33,33,33,33,33,33,33,33,15,33,15,33,33,33,33,33,33,33,33,33,33,7],
+            [7,33,33,33,2,2,33,3,3,33,33,33,33,33,33,3,3,33,33,2,2,33,33,33,7],
+            [7,33,33,2,2,2,3,3,33,33,7,33,33,33,7,33,3,3,2,2,2,33,33,33,7],
+            [7,33,33,2,2,33,3,33,33,33,33,2,2,2,33,33,33,3,33,33,2,2,33,33,7],
+            [7,33,33,33,33,33,33,33,33,2,2,2,7,2,2,2,33,33,33,33,33,33,33,33,7],
+            [7,33,7,33,33,33,33,2,2,2,2,33,33,33,2,2,2,2,33,33,33,7,33,33,7],
+            [7,33,7,3,33,33,2,2,2,33,33,33,33,33,33,33,2,2,2,33,3,7,33,33,7],
+            [7,33,33,33,33,2,2,33,33,33,33,33,14,33,33,33,33,33,2,2,33,33,33,15,7],
+            [7,33,7,3,33,33,2,2,2,33,33,33,33,33,33,33,2,2,2,33,3,7,33,15,7],
+            [7,33,7,33,33,33,33,2,2,2,2,33,33,33,2,2,2,2,33,33,33,7,33,33,7],
+            [7,33,33,33,33,33,33,33,33,2,2,2,33,2,2,2,33,33,33,33,33,33,33,33,7],
+            [7,33,33,2,2,33,33,33,33,33,2,2,2,2,2,33,33,33,33,33,2,2,33,33,7],
+            [7,33,33,2,2,2,33,33,33,33,33,33,33,33,33,33,33,33,2,2,2,33,33,33,7],
+            [7,33,33,33,2,2,33,33,13,33,33,33,33,33,33,33,13,33,33,2,2,33,33,33,7],
+            [7,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,7],
+            [7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]
+        ],
+        exits: [
+            { x: 11, y: 1, target: 'village', spawnX: 19, spawnY: 14 },
+            { x: 13, y: 1, target: 'village', spawnX: 20, spawnY: 14 },
+            { x: 23, y: 8, target: 'ruins', spawnX: 1, spawnY: 8 },
+            { x: 23, y: 9, target: 'ruins', spawnX: 1, spawnY: 9 }
+        ],
+        signs: [
+            { x: 8, y: 14, text: '🐸 Moeras — Duistere wezens spoken rond in de mist!' },
+            { x: 16, y: 14, text: '→ Ruïnes: Oude beschaving met sterke bewakers! 🏛️' }
+        ],
+        npcs: [
+            { x: 12, y: 8, name: 'Moeraseks Hilda', emoji: '🧙‍♀️',
+              dialog: ['Hihihi... verdwaald in mijn moeras?',
+                       'De dwaallichten leiden je naar gevaarlijke plekken...',
+                       'Laat me je kracht testen!'],
+              battle: true,
+              team: [
+                { id: 'kappa', level: 8 },
+                { id: 'wisp', level: 9 },
+                { id: 'slangenkoning', level: 10 }
+              ]
+            }
+        ],
+        houses: []
+    },
+
+    ruins: {
+        name: 'Oude Ruïnes',
+        emoji: '🏛️',
+        bgColor: '#4a4038',
+        music: 'cave',
+        encounters: true,
+        encounterRate: 0.18,
+        availableAnimals: ['gargoyle', 'medusa', 'chimaera', 'wisp', 'basilisk', 'cerberus', 'minotaurus', 'golem'],
+        tiles: [
+            [35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35],
+            [35,34,34,34,35,34,34,34,34,35,34,34,34,34,34,35,34,34,34,34,35,34,34,34,35],
+            [35,34,34,34,34,34,34,35,34,34,34,34,34,34,34,34,34,35,34,34,34,34,34,34,35],
+            [35,34,34,2,2,34,34,34,34,34,2,2,2,2,2,34,34,34,34,34,2,2,34,34,35],
+            [35,34,34,2,2,34,34,34,34,34,2,2,35,2,2,34,34,34,34,34,2,2,34,34,35],
+            [35,34,34,34,34,34,34,34,2,2,2,35,35,35,2,2,2,34,34,34,34,34,34,34,35],
+            [35,34,34,34,34,34,34,2,2,34,34,35,35,35,34,34,2,2,34,34,34,34,34,34,35],
+            [35,34,35,34,34,34,2,2,34,34,34,34,34,34,34,34,34,2,2,34,34,35,34,34,35],
+            [35,15,34,34,34,2,2,34,34,34,34,34,14,34,34,34,34,34,2,2,34,34,34,34,35],
+            [35,15,35,34,34,34,2,2,34,34,34,34,34,34,34,34,34,2,2,34,34,35,34,34,35],
+            [35,34,34,34,34,34,34,2,2,34,34,8,34,8,34,34,2,2,34,34,34,34,34,34,35],
+            [35,34,34,34,34,34,34,34,2,2,2,34,34,34,2,2,2,34,34,34,34,34,34,34,35],
+            [35,34,34,2,2,34,34,34,34,34,2,2,34,2,2,34,34,34,34,34,2,2,34,34,35],
+            [35,34,34,2,2,2,34,34,34,34,34,34,13,34,34,34,34,34,2,2,2,34,34,34,35],
+            [35,34,34,34,2,2,34,34,34,34,34,34,34,34,34,34,34,34,34,2,2,34,34,34,35],
+            [35,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,35],
+            [35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35]
+        ],
+        exits: [
+            { x: 1, y: 8, target: 'swamp', spawnX: 22, spawnY: 8 },
+            { x: 1, y: 9, target: 'swamp', spawnX: 22, spawnY: 9 }
+        ],
+        signs: [
+            { x: 12, y: 13, text: '🏛️ Ruïnes — Hier sluimeren oeroude bewakers...' }
+        ],
+        npcs: [
+            { x: 12, y: 8, name: 'Ruïnebewaker Theron', emoji: '🧝‍♂️',
+              dialog: ['Halt! Deze ruïnes zijn heilig terrein!',
+                       'Alleen ware kampioenen mogen hier vangen.',
+                       'Bewijs je kracht in een gevecht!'],
+              battle: true,
+              team: [
+                { id: 'gargoyle', level: 10 },
+                { id: 'medusa', level: 11 },
+                { id: 'chimaera', level: 12 }
               ]
             }
         ],
