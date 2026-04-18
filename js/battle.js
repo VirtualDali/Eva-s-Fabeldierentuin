@@ -299,12 +299,13 @@ function showBattleBag() {
 }
 
 function throwBall(ballType) {
-    const ball = ballType === 'superbal' ? { bonus: 1.5 } : { bonus: 1 };
+    const ball = ballType === 'superbal' ? { bonus: 2.0 } : { bonus: 1.5 };
     gamePlayer.bag[ballType]--;
 
     const enemyDef = getAnimalDef(battleState.enemy.id);
     const hpRatio = battleState.enemy.hp / battleState.enemy.maxHp;
-    const catchChance = enemyDef.catchRate * ball.bonus * (1 - hpRatio * 0.5);
+    const baseCatch = Math.max(enemyDef.catchRate * 2.5, 0.4);
+    const catchChance = Math.min(0.95, baseCatch * ball.bonus * (1 - hpRatio * 0.3));
 
     document.getElementById('battle-actions').innerHTML = '';
     setBattleText(`Je gooit een ${ballType === 'superbal' ? '💎 Superbal' : '🔮 Fabelbal'}...`);
